@@ -1,0 +1,823 @@
+/* =========================================
+   BOOKING PAGE
+========================================= */
+
+.booking-page {
+  min-height: 100vh;
+  padding: 130px 40px 100px;
+
+  background:
+    linear-gradient(
+      rgba(8, 8, 8, 0.82),
+      rgba(8, 8, 8, 0.94)
+    ),
+    url('../../assets/back2.jpg') center / cover fixed no-repeat;
+
+  color: #fff;
+}
+
+.booking-page__container {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+}
+
+
+/* =========================================
+   BACK
+========================================= */
+
+.booking-page__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-bottom: 55px;
+
+  color: rgba(255, 255, 255, 0.45);
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+
+  text-decoration: none;
+
+  transition: color 0.25s ease;
+}
+
+.booking-page__back span {
+  font-size: 18px;
+}
+
+.booking-page__back:hover {
+  color: #fff;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.booking-page__header {
+  margin-bottom: 55px;
+}
+
+.booking-page__eyebrow {
+  display: block;
+
+  margin-bottom: 12px;
+
+  color: #d100ff;
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 3px;
+}
+
+.booking-page__title {
+  margin: 0;
+
+  color: #fff;
+
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(38px, 5vw, 64px);
+  font-weight: 700;
+  line-height: 1;
+
+  letter-spacing: 2px;
+}
+
+.booking-page__game {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  margin-top: 25px;
+}
+
+.booking-page__game span {
+  color: rgba(255, 255, 255, 0.4);
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+}
+
+.booking-page__game strong {
+  color: #fff;
+
+  font-family: 'Orbitron', sans-serif;
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+
+
+/* =========================================
+   MAIN FORM
+========================================= */
+
+.booking {
+  width: 100%;
+
+  padding: 40px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  background: rgba(12, 12, 12, 0.76);
+
+  box-shadow:
+    0 30px 100px rgba(0, 0, 0, 0.45);
+}
+
+
+/* =========================================
+   STEP
+========================================= */
+
+.booking__step {
+  padding: 35px 0;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.booking__step:first-child {
+  padding-top: 0;
+}
+
+.booking__step:last-child {
+  border-bottom: none;
+}
+
+
+/* =========================================
+   STEP HEADER
+========================================= */
+
+.booking__step-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  margin-bottom: 28px;
+}
+
+.booking__step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  border: 1px solid rgba(209, 0, 255, 0.5);
+
+  color: #d100ff;
+
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.booking__step-label {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: rgba(255, 255, 255, 0.35);
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+}
+
+.booking__step-header h2 {
+  margin: 0;
+
+  color: #fff;
+
+  font-family: 'Orbitron', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+
+/* =========================================
+   ZONES / TARIFFS
+   ВСЕ ТАРИФЫ В РЯД
+========================================= */
+
+.booking__zones {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 14px;
+}
+
+.booking__zone {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  min-height: 125px;
+
+  padding: 22px;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  background: rgba(255, 255, 255, 0.025);
+
+  color: #fff;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    transform 0.25s ease;
+}
+
+.booking__zone::before {
+  content: '';
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 0;
+  height: 2px;
+
+  background: #d100ff;
+
+  transition: width 0.3s ease;
+}
+
+.booking__zone:hover {
+  border-color: rgba(209, 0, 255, 0.45);
+
+  background: rgba(209, 0, 255, 0.045);
+
+  transform: translateY(-3px);
+}
+
+.booking__zone:hover::before {
+  width: 100%;
+}
+
+.booking__zone--active {
+  border-color: #d100ff;
+
+  background: rgba(209, 0, 255, 0.08);
+
+  box-shadow:
+    inset 0 0 30px rgba(209, 0, 255, 0.035);
+}
+
+.booking__zone--active::before {
+  width: 100%;
+}
+
+.booking__zone span {
+  color: #fff;
+
+  font-family: 'Orbitron', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.booking__zone small {
+  color: rgba(255, 255, 255, 0.45);
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.booking__zone--active small {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+
+/* =========================================
+   SELECTED ZONE
+========================================= */
+
+.booking__selected {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 25px 28px;
+
+  margin-bottom: 10px;
+
+  border: 1px solid rgba(209, 0, 255, 0.4);
+
+  background: rgba(209, 0, 255, 0.055);
+}
+
+.booking__selected-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.booking__selected-label {
+  color: rgba(255, 255, 255, 0.35);
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+}
+
+.booking__selected-info strong {
+  color: #fff;
+
+  font-family: 'Orbitron', sans-serif;
+  font-size: 20px;
+}
+
+.booking__selected-price {
+  color: #d100ff;
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+
+/* =========================================
+   FIELD / DATE
+========================================= */
+
+.booking__field {
+  width: 100%;
+}
+
+.booking__date-picker {
+  width: 100%;
+  height: 58px;
+
+  padding: 0 18px;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  outline: none;
+
+  background: #151515;
+
+  color: #fff;
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+
+.booking__date-picker:hover {
+  border-color: rgba(209, 0, 255, 0.5);
+}
+
+.booking__date-picker:focus {
+  border-color: #d100ff;
+  background: #181818;
+}
+
+
+/* =========================================
+   RESOURCES / PCS
+========================================= */
+
+.booking__resources {
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 12px;
+}
+
+.booking__resource {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  min-height: 95px;
+
+  padding: 18px;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  background: rgba(255, 255, 255, 0.025);
+
+  color: #fff;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    transform 0.25s ease;
+}
+
+.booking__resource:hover:not(:disabled) {
+  border-color: rgba(209, 0, 255, 0.5);
+
+  background: rgba(209, 0, 255, 0.05);
+
+  transform: translateY(-2px);
+}
+
+.booking__resource strong {
+  margin-bottom: 10px;
+
+  color: #fff;
+
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+}
+
+.booking__resource span {
+  color: rgba(255, 255, 255, 0.4);
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+}
+
+.booking__resource--active {
+  border-color: #d100ff;
+
+  background: rgba(209, 0, 255, 0.09);
+}
+
+.booking__resource--active span {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.booking__resource--busy {
+  opacity: 0.28;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================
+   HINT
+========================================= */
+
+.booking__hint {
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.3);
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
+}
+
+
+/* =========================================
+   TIMES
+========================================= */
+
+.booking__times {
+  display: grid;
+
+  grid-template-columns: repeat(6, 1fr);
+
+  gap: 10px;
+}
+
+.booking__time {
+  height: 48px;
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  background: rgba(255, 255, 255, 0.025);
+
+  color: rgba(255, 255, 255, 0.6);
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.booking__time:hover {
+  border-color: rgba(209, 0, 255, 0.55);
+
+  color: #fff;
+}
+
+.booking__time--active {
+  border-color: #d100ff;
+
+  background: #d100ff;
+
+  color: #fff;
+}
+
+
+/* =========================================
+   DURATION
+   СТАРЫЙ ВАРИАНТ — НЕ SELECT
+========================================= */
+
+.booking__duration {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.booking__duration input {
+  width: 120px;
+  height: 58px;
+
+  padding: 0 18px;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  outline: none;
+
+  background: #151515;
+
+  color: #fff;
+
+  font-family: 'Orbitron', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+
+  text-align: center;
+
+  transition: border-color 0.25s ease;
+}
+
+.booking__duration input:hover {
+  border-color: rgba(209, 0, 255, 0.5);
+}
+
+.booking__duration input:focus {
+  border-color: #d100ff;
+}
+
+.booking__duration > span {
+  color: rgba(255, 255, 255, 0.6);
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px;
+}
+
+.booking__duration small {
+  margin-left: 10px;
+
+  color: rgba(255, 255, 255, 0.3);
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+}
+
+
+/* Убираем уродливые стрелки number input */
+
+.booking__duration input::-webkit-inner-spin-button,
+.booking__duration input::-webkit-outer-spin-button {
+  opacity: 0.4;
+}
+
+
+/* =========================================
+   SUMMARY
+========================================= */
+
+.booking__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 30px;
+
+  padding-top: 35px;
+}
+
+.booking__summary-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.booking__summary-info span {
+  color: rgba(255, 255, 255, 0.35);
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+.booking__summary-info strong {
+  color: #fff;
+
+  font-family: 'Orbitron', sans-serif;
+  font-size: 28px;
+}
+
+
+/* =========================================
+   SUBMIT
+========================================= */
+
+.booking__submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+
+  min-width: 280px;
+  height: 58px;
+
+  padding: 0 28px;
+
+  border: 1px solid #d100ff;
+
+  background: #d100ff;
+
+  color: #fff;
+
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.booking__submit span {
+  font-size: 20px;
+}
+
+.booking__submit:hover:not(:disabled) {
+  background: #b800df;
+
+  border-color: #b800df;
+
+  transform: translateY(-2px);
+}
+
+.booking__submit:disabled {
+  opacity: 0.25;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* =========================================
+   DATEPICKER
+========================================= */
+
+.react-datepicker {
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+
+  background: #141414 !important;
+
+  color: #fff !important;
+
+  font-family: 'Rajdhani', sans-serif !important;
+}
+
+.react-datepicker__header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+
+  background: #0d0d0d !important;
+}
+
+.react-datepicker__current-month {
+  color: #fff !important;
+}
+
+.react-datepicker__day-name {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.react-datepicker__day {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.react-datepicker__day:hover {
+  background: rgba(209, 0, 255, 0.25) !important;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background: #d100ff !important;
+
+  color: #fff !important;
+}
+
+.react-datepicker__day--disabled {
+  color: rgba(255, 255, 255, 0.18) !important;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 900px) {
+  .booking-page {
+    padding: 120px 25px 80px;
+  }
+
+  .booking {
+    padding: 30px;
+  }
+
+  .booking__zones {
+    grid-template-columns: 1fr;
+  }
+
+  .booking__resources {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .booking__times {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+
+@media (max-width: 600px) {
+  .booking-page {
+    padding: 100px 16px 60px;
+  }
+
+  .booking {
+    padding: 22px;
+  }
+
+  .booking-page__title {
+    font-size: 34px;
+  }
+
+  .booking__step-header h2 {
+    font-size: 16px;
+  }
+
+  .booking__resources {
+    grid-template-columns: 1fr;
+  }
+
+  .booking__times {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .booking__duration {
+    flex-wrap: wrap;
+  }
+
+  .booking__summary {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .booking__submit {
+    width: 100%;
+  }
+
+  .booking__selected {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+}

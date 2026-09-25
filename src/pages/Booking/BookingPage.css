@@ -1,0 +1,91 @@
+
+
+.booking-page {
+  min-height: 100vh;
+  padding-top: 100px;
+  background: #0a0a0a;
+  color: #fff;
+}
+
+.booking-page__top {
+  width: min(1200px, calc(100% - 80px));
+  margin: 0 auto;
+  padding: 45px 0 20px;
+}
+
+.booking-page__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-bottom: 45px;
+
+  color: rgba(255, 255, 255, 0.5);
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  text-decoration: none;
+
+  transition: color 0.25s ease;
+}
+
+.booking-page__back:hover {
+  color: #fff;
+}
+
+.booking-page__back svg {
+  width: 18px;
+  height: 18px;
+}
+
+.booking-page__header {
+  margin-bottom: 20px;
+}
+
+.booking-page__eyebrow {
+  color: #d100ff;
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 3px;
+}
+
+.booking-page__title {
+  margin: 10px 0 15px;
+
+  color: #fff;
+
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(42px, 7vw, 76px);
+  font-weight: 900;
+  font-style: italic;
+  line-height: 1;
+  letter-spacing: 2px;
+}
+
+.booking-page__description {
+  max-width: 550px;
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.5);
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .booking-page {
+    padding-top: 80px;
+  }
+
+  .booking-page__top {
+    width: calc(100% - 40px);
+    padding-top: 30px;
+  }
+
+  .booking-page__back {
+    margin-bottom: 35px;
+  }
+}

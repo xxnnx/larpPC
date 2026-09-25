@@ -1,0 +1,490 @@
+.zone-details {
+  min-height: 100vh;
+  background: #0a0a0a;
+  color: #fff;
+}
+
+/* HERO */
+
+.zone-details__hero {
+  position: relative;
+  min-height: 650px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.zone-details__hero-image {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+}
+
+.zone-details__hero-overlay {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      to top,
+      #0a0a0a 0%,
+      rgba(10, 10, 10, 0.75) 35%,
+      rgba(10, 10, 10, 0.25) 75%,
+      rgba(10, 10, 10, 0.45) 100%
+    );
+}
+
+.zone-details__hero-content {
+  position: relative;
+  z-index: 1;
+
+  width: min(1200px, calc(100% - 80px));
+  margin: 0 auto;
+  padding: 100px 0 70px;
+}
+
+.zone-details__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-bottom: 55px;
+
+  color: rgba(255, 255, 255, 0.6);
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  text-decoration: none;
+
+  transition: color 0.25s ease;
+}
+
+.zone-details__back svg {
+  width: 18px;
+}
+
+.zone-details__back:hover {
+  color: #fff;
+}
+
+.zone-details__eyebrow,
+.zone-details__section-label {
+  color: #d100ff;
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 3px;
+}
+
+.zone-details__title {
+  margin: 10px 0 15px;
+
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(50px, 8vw, 100px);
+  font-weight: 900;
+  font-style: italic;
+  line-height: 0.95;
+  letter-spacing: 2px;
+}
+
+.zone-details__description {
+  max-width: 550px;
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.65);
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.zone-details__hero-bottom {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+
+  margin-top: 35px;
+}
+
+.zone-details__price {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.zone-details__price span {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.zone-details__price strong {
+  font-size: 30px;
+  color: #fff;
+}
+
+.zone-details__booking,
+.zone-details__main-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+
+  padding: 15px 22px;
+
+  color: #fff;
+  background: #d100ff;
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-decoration: none;
+
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease;
+}
+
+.zone-details__booking:hover,
+.zone-details__main-button:hover {
+  background: #b000d8;
+  transform: translateY(-2px);
+}
+
+/* COMMON */
+
+.zone-details__content,
+.zone-details__features,
+.zone-details__tariffs {
+  width: min(1200px, calc(100% - 80px));
+  margin: 0 auto;
+  padding: 110px 0;
+}
+
+.zone-details__section-header {
+  margin-bottom: 45px;
+}
+
+.zone-details__section-header h2 {
+  margin: 10px 0 0;
+
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(35px, 5vw, 58px);
+  font-weight: 800;
+  font-style: italic;
+  line-height: 1;
+}
+
+.zone-details__section-header h2 span {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* EQUIPMENT */
+
+.zone-details__equipment {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.zone-details__equipment-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  min-height: 110px;
+  padding: 22px;
+
+  background: #101010;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.zone-details__equipment-card:hover {
+  border-color: rgba(209, 0, 255, 0.5);
+  transform: translateY(-3px);
+}
+
+.zone-details__equipment-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 45px;
+  height: 45px;
+  flex-shrink: 0;
+
+  color: #d100ff;
+  background: rgba(209, 0, 255, 0.08);
+}
+
+.zone-details__equipment-icon svg {
+  width: 21px;
+  height: 21px;
+}
+
+.zone-details__equipment-card > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.zone-details__equipment-card span {
+  color: rgba(255, 255, 255, 0.4);
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+}
+
+.zone-details__equipment-card strong {
+  color: #fff;
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* FEATURES */
+
+.zone-details__features {
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.zone-details__features-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.zone-details__feature {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  padding: 20px;
+
+  background: #101010;
+}
+
+.zone-details__feature svg {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+
+  color: #d100ff;
+}
+
+.zone-details__feature span {
+  color: rgba(255, 255, 255, 0.7);
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px;
+}
+
+/* TARIFFS */
+
+.zone-details__tariffs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.zone-details__tariff {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  min-height: 190px;
+  padding: 25px;
+
+  color: #fff;
+  background: #101010;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  text-decoration: none;
+  cursor: pointer;
+
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    background 0.25s ease;
+}
+
+.zone-details__tariff:hover {
+  background: #121212;
+  border-color: rgba(209, 0, 255, 0.7);
+  transform: translateY(-5px);
+}
+
+.zone-details__tariff > svg {
+  width: 20px;
+  height: 20px;
+
+  margin-bottom: auto;
+
+  color: #d100ff;
+}
+
+.zone-details__tariff-duration {
+  color: rgba(255, 255, 255, 0.45);
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.zone-details__tariff-price {
+  margin: 4px 0;
+
+  font-family: 'Orbitron', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.zone-details__tariff-label {
+  color: rgba(255, 255, 255, 0.3);
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.zone-details__tariff-action {
+  margin-top: 15px;
+
+  color: #d100ff;
+
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+
+  opacity: 0;
+  transform: translateY(5px);
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.zone-details__tariff:hover .zone-details__tariff-action {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.zone-details__main-button {
+  margin-top: 35px;
+}
+
+/* 404 */
+
+.zone-details--not-found {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 100vh;
+}
+
+.zone-details__not-found {
+  text-align: center;
+}
+
+.zone-details__not-found > span {
+  color: #d100ff;
+
+  font-family: 'Orbitron', sans-serif;
+  font-size: 80px;
+  font-weight: 900;
+}
+
+.zone-details__not-found h1 {
+  font-family: 'Orbitron', sans-serif;
+}
+
+.zone-details__not-found p {
+  color: rgba(255, 255, 255, 0.5);
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.zone-details__back-button {
+  display: inline-block;
+
+  margin-top: 20px;
+  padding: 13px 20px;
+
+  color: #fff;
+  background: #d100ff;
+
+  font-family: 'Rajdhani', sans-serif;
+  text-decoration: none;
+}
+
+/* TABLET */
+
+@media (max-width: 900px) {
+  .zone-details__equipment {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .zone-details__tariffs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+  .zone-details__hero-content,
+  .zone-details__content,
+  .zone-details__features,
+  .zone-details__tariffs {
+    width: min(100% - 40px, 1200px);
+  }
+
+  .zone-details__hero {
+    min-height: 650px;
+  }
+
+  .zone-details__hero-content {
+    padding-bottom: 45px;
+  }
+
+  .zone-details__back {
+    margin-bottom: 80px;
+  }
+
+  .zone-details__hero-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 25px;
+  }
+
+  .zone-details__equipment,
+  .zone-details__features-list,
+  .zone-details__tariffs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .zone-details__content,
+  .zone-details__features,
+  .zone-details__tariffs {
+    padding: 75px 0;
+  }
+}
