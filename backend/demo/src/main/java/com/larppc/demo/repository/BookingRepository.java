@@ -20,6 +20,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             BookingStatus status
     );
 
+    // проверка пересечения бронирований. (учитываются только активные бронирования)
     @Query("""
         SELECT COUNT(b) > 0
         FROM Booking b
