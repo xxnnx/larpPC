@@ -5,12 +5,11 @@ import com.larppc.demo.dto.UserLoginRequest;
 import com.larppc.demo.dto.UserRegisterRequest;
 import com.larppc.demo.dto.UserResponse;
 import com.larppc.demo.entity.User;
+import com.larppc.demo.security.JwtService;
 import com.larppc.demo.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
@@ -18,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class AuthController {
 
     private final UserService userService;
+    private final JwtService jwtService;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, JwtService jwtService) {
         this.userService = userService;
+        this.jwtService = jwtService;
     }
 
     @PostMapping("/register")
@@ -59,8 +60,10 @@ public class AuthController {
                                 user.getCreatedAt()
                         );
 
+                        String token = jwtService.generateToken(user);
+
                         return ResponseEntity.ok(
-                                new AuthResponse("Успешный вход", userResponse)
+                                new AuthResponse("Успешный вход", userResponse, token)
                         );
                 }).orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
