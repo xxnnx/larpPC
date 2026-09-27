@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { useAuth } from '../../context/useAuth';
+import { useAuth } from "../../context/AuthContext";
 import './Register.css';
 
 function Register() {

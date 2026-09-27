@@ -13,6 +13,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import Profile from './pages/Profile/Profile';
+import ZoneDetails from './pages/ZoneDetails/ZoneDetails';
+
 
 function HomePage() {
   return (
@@ -38,6 +40,9 @@ function App() {
       <Route path="/login" element={<Login />} />
 
       <Route path="/register" element={<Register />} />
+
+      
+      <Route path="/zones/:id" element={<ZoneDetails />} />
 
       <Route
         path="/profile"

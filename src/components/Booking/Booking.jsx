@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import SeatMap from '../SeatMap/SeatMap';
 import DatePicker from 'react-datepicker';
 
 import {
@@ -183,25 +184,7 @@ function Booking() {
 
         let times = [];
 
-        /*
-         * Backend может вернуть:
-         *
-         * ["10:00", "11:00", "12:00"]
-         *
-         * или:
-         *
-         * [
-         *   { time: "10:00" },
-         *   { time: "11:00" }
-         * ]
-         *
-         * или:
-         *
-         * {
-         *   availableFrom: "10:00",
-         *   availableTo: "22:00"
-         * }
-         */
+       
 
         if (Array.isArray(data)) {
           times = data
@@ -267,8 +250,7 @@ function Booking() {
     }
 
     /*
-     * Если backend передал availableTo,
-     * используем его.
+     
      */
 
     if (selectedResource.availableTo) {
@@ -287,8 +269,7 @@ function Booking() {
     }
 
     /*
-     * Если backend вернул слоты,
-     * считаем оставшиеся часы.
+     *
      */
 
     const timeIndex =
@@ -702,60 +683,71 @@ function Booking() {
                 В этой зоне нет игровых мест.
               </p>
             ) : (
-              <div className="booking__resources">
+              <SeatMap
+                computers={resources.map(item => ({
+                  id: item.id,
+                  
+                  number: item.name, 
+                  
+                  status: item.available !== false ? 'AVAILABLE' : 'OCCUPIED' 
+                }))}
+                selectedSeat={resource} 
+                onSelect={handleResourceChange} 
+              />
+              // <div className="booking__resources">
 
-                {resources.map((item) => {
+              //   {resources.map((item) => {
 
-                  const isAvailable =
-                    item.available !== false;
+              //     const isAvailable =
+              //       item.available !== false;
 
-                  const isActive =
-                    String(resource) ===
-                    String(item.id);
+              //     const isActive =
+              //       String(resource) ===
+              //       String(item.id);
 
-                  return (
-                    <button
-                      key={item.id}
-                      type="button"
-                      disabled={!isAvailable}
-                      className={`
-                        booking__resource
-                        ${
-                          isActive
-                            ? 'booking__resource--active'
-                            : ''
-                        }
-                        ${
-                          !isAvailable
-                            ? 'booking__resource--busy'
-                            : ''
-                        }
-                      `}
-                      onClick={() =>
-                        handleResourceChange(
-                          item.id
-                        )
-                      }
-                    >
+              //     return (
+              //       <button
+              //         key={item.id}
+              //         type="button"
+              //         disabled={!isAvailable}
+              //         className={`
+              //           booking__resource
+              //           ${
+              //             isActive
+              //               ? 'booking__resource--active'
+              //               : ''
+              //           }
+              //           ${
+              //             !isAvailable
+              //               ? 'booking__resource--busy'
+              //               : ''
+              //           }
+              //         `}
+              //         onClick={() =>
+              //           handleResourceChange(
+              //             item.id
+              //           )
+              //         }
+              //       >
 
-                      <strong>
-                        {item.name}
-                      </strong>
+              //         <strong>
+              //           {item.name}
+              //         </strong>
 
-                      <span>
-                        {isAvailable
-                          ? item.availableFrom &&
-                            item.availableTo
-                            ? `${item.availableFrom} — ${item.availableTo}`
-                            : 'СВОБОДНО'
-                          : 'ЗАНЯТО'}
-                      </span>
+              //         <span>
+              //           {isAvailable
+              //             ? item.availableFrom &&
+              //               item.availableTo
+              //               ? `${item.availableFrom} — ${item.availableTo}`
+              //               : 'СВОБОДНО'
+              //             : 'ЗАНЯТО'}
+              //         </span>
 
-                    </button>
-                  );
-                })}
+              //       </button>
+              //     );
+              //   })}
 
-              </div>
+              // </div>
             )}
 
           </section>

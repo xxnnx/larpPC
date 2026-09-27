@@ -15,10 +15,10 @@ import zones from '../../data/zones';
 import './ZoneDetails.css';
 
 function ZoneDetails() {
-  const { zoneId } = useParams();
+  const { id } = useParams();
 
   const zone = zones.find(
-    (item) => item.id === zoneId
+    (item) => item.id === id
   );
 
   if (!zone) {
