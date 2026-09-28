@@ -22,6 +22,22 @@ public class JwtService {
             SECRET_KEY.getBytes(StandardCharsets.UTF_8)
     );
 
+    public String extractEmail(String token){
+        return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload().getSubject();
+    }
+
+    public boolean isTokenValid(String token, User user){
+        String email = extractEmail(token);
+
+        return email.equals(user.getEmail())&& !isTokenExpired(token);
+    }
+
+    public boolean isTokenExpired(String token){
+        Date expiration = Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload().getExpiration();
+
+        return expiration.before(new Date());
+    }
+
     public String generateToken(User user) {
 
         return Jwts.builder()
