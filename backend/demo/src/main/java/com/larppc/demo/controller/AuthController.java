@@ -9,7 +9,9 @@ import com.larppc.demo.security.JwtService;
 import com.larppc.demo.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
 
 
 @RestController
@@ -67,5 +69,11 @@ public class AuthController {
                         );
                 }).orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
+
+    @GetMapping("/me")
+    public UserResponse getCurrentUser(@AuthenticationPrincipal User user) {
+        return new UserResponse(user);
+    }
+    
     
 }

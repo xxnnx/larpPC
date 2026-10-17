@@ -1,10 +1,8 @@
-// userRespone создался для того чтобы сделать ответ сервера безопасным
-// и passwordhash не был виден в ответе, запись происходит через userService
-
 
 package com.larppc.demo.dto;
 
 import com.larppc.demo.entity.Role;
+import com.larppc.demo.entity.User;
 
 import java.time.LocalDateTime;
 
@@ -31,6 +29,16 @@ public class UserResponse {
         this.email = email;
         this.role = role;
         this.createdAt = createdAt;
+    }
+
+    public UserResponse(User user) {
+        this(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getRole(),
+                user.getCreatedAt()
+        );
     }
 
     public Long getId() {
