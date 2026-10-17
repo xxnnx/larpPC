@@ -14,4 +14,6 @@ public interface ComputerRepository extends JpaRepository<Computer, Long> {
     boolean existsByNumber(Integer number);
 
     List<Computer> findByStatus(ComputerStatus status);
+
+    List<Computer> findByRoomId(Long roomId);
 }

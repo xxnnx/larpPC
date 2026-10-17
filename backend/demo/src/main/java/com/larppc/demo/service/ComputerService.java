@@ -2,7 +2,9 @@ package com.larppc.demo.service;
 
 import com.larppc.demo.entity.Computer;
 import com.larppc.demo.repository.ComputerRepository;
+import com.larppc.demo.repository.RoomRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,10 +12,12 @@ import java.util.Optional;
 @Service
 public class ComputerService {
 
+    private final RoomRepository roomRepository;
     private final ComputerRepository computerRepository;
 
-    public ComputerService(ComputerRepository computerRepository) {
+    public ComputerService(ComputerRepository computerRepository, RoomRepository roomRepository) {
         this.computerRepository = computerRepository;
+        this.roomRepository = roomRepository;
     }
 
     public List<Computer> getAllComputers() {
@@ -38,5 +42,11 @@ public class ComputerService {
 
                     return computerRepository.save(computer);
                 });
+    }
+
+    @Transactional (readOnly = true)
+    public List<Computer> getComputersByRoom(Long roomId){
+        if (!roomRepository.existsById(roomId)) { throw new IllegalArgumentException("Комната не найдена"); }
+        return computerRepository.findByRoomId(roomId);
     }
 }
