@@ -2,6 +2,7 @@ package com.larppc.demo.entity;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -32,6 +33,13 @@ public class Booking {
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "tariff_id", nullable = false)
+    private Tariff tariff;
+
+    @Column(name = "price_at_booking", nullable = false, precision = 10, scale = 2)
+    private BigDecimal priceAtBooking;
 
     public Booking() {
     }
@@ -90,5 +98,21 @@ public class Booking {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Tariff getTariff() {
+        return tariff;
+    }
+
+    public void setTariff(Tariff tariff) {
+        this.tariff = tariff;
+    }
+
+    public BigDecimal getPriceAtBooking() {
+        return priceAtBooking;
+    }
+
+    public void setPriceAtBooking(BigDecimal priceAtBooking) {
+        this.priceAtBooking = priceAtBooking;
     }
 }

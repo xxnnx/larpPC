@@ -29,7 +29,7 @@ public class BookingController {
     @PostMapping
     public BookingResponse createBooking(@AuthenticationPrincipal User user, @RequestBody BookingRequest request) {
         return new BookingResponse(
-            bookingService.createBooking(user.getId(), request.getComputerId(), request.getStartTime(), request.getEndTime())
+            bookingService.createBooking(user.getId(), request.getComputerId(), request.getTariffId(), request.getStartTime(), request.getEndTime())
         );
     }
 

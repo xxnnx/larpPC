@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 public class BookingRequest {
     private Long computerId;
+    private Long tariffId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
@@ -16,4 +17,7 @@ public class BookingRequest {
     
     public LocalDateTime getEndTime() { return endTime; }
     public void setEndTime(LocalDateTime endTime) { this.endTime = endTime; }
+
+    public Long getTariffId() { return tariffId; }
+    public void setTariffId(Long tariffId) { this.tariffId = tariffId; }
 }
