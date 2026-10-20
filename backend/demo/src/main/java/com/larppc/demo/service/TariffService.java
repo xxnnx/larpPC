@@ -3,6 +3,7 @@ package com.larppc.demo.service;
 
 import com.larppc.demo.dto.TariffCreateRequest;
 import com.larppc.demo.dto.TariffResponse;
+import com.larppc.demo.dto.TariffUpdateRequest;
 import com.larppc.demo.entity.Room;
 import com.larppc.demo.entity.Tariff;
 import com.larppc.demo.entity.TariffType;
@@ -21,20 +22,14 @@ public class TariffService {
     private final TariffRepository tariffRepository;
     private final RoomRepository roomRepository;
 
-    public TariffService(
-            TariffRepository tariffRepository,
-            RoomRepository roomRepository
-    ) {
+    public TariffService(TariffRepository tariffRepository, RoomRepository roomRepository) {
         this.tariffRepository = tariffRepository;
         this.roomRepository = roomRepository;
     }
 
     @Transactional(readOnly = true)
     public List<TariffResponse> getAllTariffs() {
-        return tariffRepository.findAll()
-                .stream()
-                .map(TariffResponse::new)
-                .toList();
+        return tariffRepository.findAll().stream().map(TariffResponse::new).toList();
     }
 
     @Transactional(readOnly = true)
@@ -43,10 +38,7 @@ public class TariffService {
             throw new IllegalArgumentException("Зал не найден");
         }
 
-        return tariffRepository.findByRoomIdAndActiveTrue(roomId)
-                .stream()
-                .map(TariffResponse::new)
-                .toList();
+        return tariffRepository.findByRoomIdAndActiveTrue(roomId).stream().map(TariffResponse::new).toList();
     }
 
     @Transactional
@@ -64,29 +56,21 @@ public class TariffService {
             throw new IllegalArgumentException("Не указан тип тарифа");
         }
 
-        if (request.getPrice() == null
-                || request.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
+        if (request.getPrice() == null || request.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Цена должна быть больше нуля");
         }
 
         if (request.getTariffType() == TariffType.HOURLY) {
             if (request.getDurationMinutes() != null) {
-                throw new IllegalArgumentException(
-                        "Для почасового тарифа длительность указывать не нужно"
-                );
+                throw new IllegalArgumentException("Для почасового тарифа длительность указывать не нужно");
             }
         } else if (request.getTariffType() == TariffType.PACKAGE) {
-            if (request.getDurationMinutes() == null
-                    || request.getDurationMinutes() <= 0) {
-                throw new IllegalArgumentException(
-                        "Для пакета укажи длительность в минутах"
-                );
+            if (request.getDurationMinutes() == null || request.getDurationMinutes() <= 0) {
+                throw new IllegalArgumentException("Для пакета укажи длительность в минутах" );
             }
         }
 
-        Room room = roomRepository.findById(request.getRoomId())
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Зал не найден"));
+        Room room = roomRepository.findById(request.getRoomId()).orElseThrow(() -> new IllegalArgumentException("Зал не найден"));
 
         Tariff tariff = new Tariff();
         tariff.setRoom(room);
@@ -100,4 +84,46 @@ public class TariffService {
 
         return new TariffResponse(savedTariff);
     }
+
+    @Transactional
+    public TariffResponse updateTariff(Long tariffId, TariffUpdateRequest request) {
+        Tariff tariff = tariffRepository.findById(tariffId).orElseThrow(() -> new IllegalArgumentException("Тариф не найден"));
+
+        if (request.getName() != null) {
+            if (request.getName().isBlank()) { throw new IllegalArgumentException("Название тарифа не может быть пустым"); }
+
+            tariff.setName(request.getName().trim());
+        }
+
+        if (request.getPrice() != null) {
+            if (request.getPrice().signum() <= 0) { throw new IllegalArgumentException("Цена должна быть больше нуля");}
+
+            tariff.setPrice(request.getPrice());
+        }
+
+        return new TariffResponse(tariffRepository.save(tariff));
+    }
+
+    @Transactional
+    public TariffResponse deactivateTariff(Long tariffId) {
+        Tariff tariff = tariffRepository.findById(tariffId).orElseThrow(() -> new IllegalArgumentException("Тариф не найден"));
+
+        if (!Boolean.TRUE.equals(tariff.getActive())) { throw new IllegalStateException("Тариф уже отключён"); }
+
+        tariff.setActive(false);
+
+        return new TariffResponse(tariffRepository.save(tariff));
+    }
+
+    @Transactional
+    public TariffResponse activateTariff(Long tarifId) {
+        Tariff tariff = tariffRepository.findById(tarifId).orElseThrow(() -> new IllegalArgumentException("Тариф не найден"));
+
+        if (Boolean.TRUE.equals(tariff.getActive())) { throw new IllegalStateException("Тариф уже активный"); }
+        
+        tariff.setActive(true);
+
+        return new TariffResponse(tariffRepository.save(tariff));
+    }
+
 }

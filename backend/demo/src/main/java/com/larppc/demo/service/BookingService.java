@@ -44,7 +44,6 @@ public class BookingService {
             LocalDateTime startTime,
             LocalDateTime endTime
     ) {
-        // 1. Проверяем время
         if (startTime == null || endTime == null) {
             throw new IllegalArgumentException(
                     "Требуется начальное и конечное время"
@@ -63,7 +62,6 @@ public class BookingService {
             );
         }
 
-        // 2. Получаем пользователя и компьютер
         User user = userRepository.findById(userId)
                 .orElseThrow(() ->
                         new IllegalArgumentException("Пользователь не найден"));
@@ -76,7 +74,6 @@ public class BookingService {
             throw new IllegalArgumentException("Компьютер выключен");
         }
 
-        // 3. Получаем тариф
         Tariff tariff = tariffRepository.findById(tariffId)
                 .orElseThrow(() ->
                         new IllegalArgumentException("Тариф не найден"));
@@ -85,14 +82,12 @@ public class BookingService {
             throw new IllegalArgumentException("Тариф неактивен");
         }
 
-        // 4. Проверяем, что тариф подходит залу компьютера
         if (!computer.getRoom().getId().equals(tariff.getRoom().getId())) {
             throw new IllegalArgumentException(
                     "Тариф не подходит для зала этого компьютера"
             );
         }
 
-        // 5. Рассчитываем длительность
         Duration duration = Duration.between(startTime, endTime);
 
         long seconds = duration.getSeconds();
@@ -105,12 +100,10 @@ public class BookingService {
 
         long durationMinutes = seconds / 60;
 
-        // 6. Рассчитываем стоимость
         BigDecimal priceAtBooking;
 
         if (tariff.getTariffType() == TariffType.HOURLY) {
 
-            // Почасовой тариф: разрешаем целое и дробное число часов
             BigDecimal hours = BigDecimal.valueOf(durationMinutes)
                     .divide(BigDecimal.valueOf(60), 6, RoundingMode.HALF_UP);
 
@@ -120,7 +113,6 @@ public class BookingService {
 
         } else if (tariff.getTariffType() == TariffType.PACKAGE) {
 
-            // Пакет: длительность должна совпадать с длительностью тарифа
             if (tariff.getDurationMinutes() == null
                     || durationMinutes != tariff.getDurationMinutes()) {
                 throw new IllegalArgumentException(
@@ -135,7 +127,6 @@ public class BookingService {
             throw new IllegalArgumentException("Неизвестный тип тарифа");
         }
 
-        // 7. Проверяем пересечение с другими бронированиями
         boolean hasConflict =
                 bookingRepository.existsOverlappingBooking(
                         computerId,
@@ -150,7 +141,6 @@ public class BookingService {
             );
         }
 
-        // 8. Создаём бронирование
         Booking booking = new Booking();
 
         booking.setUser(user);
