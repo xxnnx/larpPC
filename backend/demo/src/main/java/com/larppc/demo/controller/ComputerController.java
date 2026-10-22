@@ -51,7 +51,7 @@ public class ComputerController {
             computer.setStatus(request.getStatus());
         }
         
-        return computerService.createComputer(computer);
+        return computerService.createComputer(computer, request.getRoomId());
     }
 
     @PutMapping("/{id}")
@@ -65,7 +65,7 @@ public class ComputerController {
         computer.setName(request.getName());
         computer.setStatus(request.getStatus());
 
-        return computerService.updateComputer(id, computer)
+        return computerService.updateComputer(id, computer, request.getRoomId())
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

@@ -28,17 +28,24 @@ public class ComputerService {
         return computerRepository.findById(id);
     }
 
-    public Computer createComputer(Computer computer) {
+    public Computer createComputer(Computer computer, Long roomId) {
+        var room = roomRepository.findById(roomId).orElseThrow(() -> new IllegalArgumentException("Зал не найден"));
+        if (computerRepository.existsByNumber(computer.getNumber())) {throw new IllegalArgumentException("Компьютер с таким номером уже существует");}
+        computer.setRoom(room);
         return computerRepository.save(computer);
     }
 
-    public Optional<Computer> updateComputer(Long id, Computer updatedComputer) {
+    @Transactional 
+    public Optional<Computer> updateComputer(Long id, Computer updatedComputer, Long roomId) {
+        var room = roomRepository.findById(roomId).orElseThrow(() -> new IllegalArgumentException("Зал не найден"));
 
         return computerRepository.findById(id)
                 .map(computer -> {
-                    computer.setNumber(updatedComputer.getNumber());
+                    if (computerRepository.existsByNumber(updatedComputer.getNumber())
+                    && !computer.getNumber().equals(updatedComputer.getNumber())) { throw new IllegalArgumentException("Компьютер с таким номером уже существует");}
                     computer.setName(updatedComputer.getName());
                     computer.setStatus(updatedComputer.getStatus());
+                    computer.setRoom(room);
 
                     return computerRepository.save(computer);
                 });
