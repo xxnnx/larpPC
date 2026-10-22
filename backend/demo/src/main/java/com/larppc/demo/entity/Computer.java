@@ -25,6 +25,10 @@ public class Computer {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "room_id", nullable = false)
+    private Room room;
+
     public Computer() {
     }
 
@@ -72,4 +76,8 @@ public class Computer {
     protected void onCreate() {
             createdAt = LocalDateTime.now();
     }
+
+    public Room getRoom() { return room; }
+
+    public void setRoom(Room room) { this.room = room; }
 }
