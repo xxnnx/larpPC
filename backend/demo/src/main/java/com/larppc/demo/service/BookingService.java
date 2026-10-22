@@ -7,6 +7,7 @@ import com.larppc.demo.repository.ComputerRepository;
 import com.larppc.demo.repository.TariffRepository;
 import com.larppc.demo.repository.UserRepository;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -168,23 +169,44 @@ public class BookingService {
     @Transactional
     public void cancelBooking(Long bookingId, Long userId) {
 
-        Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Бронирование не найдено"));
+        Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new IllegalArgumentException("Бронирование не найдено"));
 
-        if (!booking.getUser().getId().equals(userId)) {
-            throw new IllegalStateException(
-                    "Нельзя отменить бронирование другого пользователя"
-            );
-        }
+        if (!booking.getUser().getId().equals(userId)) { throw new IllegalStateException("Нельзя отменить бронирование другого пользователя"); }
 
-        if (booking.getStatus() != BookingStatus.ACTIVE) {
-            throw new IllegalStateException(
-                    "Можно отменять только активные бронирования"
-            );
-        }
+        if (booking.getStatus() != BookingStatus.ACTIVE) { throw new IllegalStateException("Можно отменять только активные бронирования");}
 
         booking.setStatus(BookingStatus.CANCELLED);
         bookingRepository.save(booking);
+    }
+
+    @Transactional
+    public void adminCancelBooking(Long bookingId) {
+        Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new IllegalArgumentException("Бронирование не найдено"));
+
+        if (booking.getStatus() != BookingStatus.ACTIVE) { throw new IllegalStateException("Можно отменить только активное бронирование");}
+
+        booking.setStatus(BookingStatus.CANCELLED);
+    }
+
+    @Transactional (readOnly = true)
+    public List<Booking> getAllBookings(){ return bookingRepository.findAll(); }
+
+    @Transactional
+    public int completeExpiredBookings() {
+        List<Booking> bookings = bookingRepository.findByStatusAndEndTimeLessThanEqual(BookingStatus.ACTIVE, LocalDateTime.now());
+
+        for (Booking booking : bookings) { booking.setStatus(BookingStatus.COMPLETED); }
+
+        return bookings.size();
+    }
+
+    @Scheduled(fixedDelay = 60_000)
+    @Transactional
+    public void autoCompleteBookings() {
+        System.out.println("Автопроверка бронирований: " + LocalDateTime.now());
+
+        int completed = completeExpiredBookings();
+
+        System.out.println("Завершено бронирований: " + completed);
     }
 }

@@ -23,6 +23,12 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             BookingStatus status
     );
 
+    @EntityGraph(attributePaths = {"computer", "tariff"})
+    @Override
+    List<Booking> findAll();
+
+    List<Booking> findByStatusAndEndTimeLessThanEqual( BookingStatus status, LocalDateTime time );
+
     // проверка пересечения бронирований. (учитываются только активные бронирования)
     @Query("""
         SELECT COUNT(b) > 0
