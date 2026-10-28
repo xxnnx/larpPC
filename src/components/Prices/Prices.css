@@ -1,0 +1,22 @@
+.prices { padding: 88px 0; background: var(--surface); border-block: 1px solid var(--border); }
+.prices__container { width: var(--container); margin: auto; }
+.section-heading { display: flex; justify-content: space-between; align-items: end; gap: 32px; margin-bottom: 36px; }
+.section-kicker { display: block; color: var(--accent-light); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+.section-heading h2 { margin: 0; font-size: clamp(28px, 3.4vw, 44px); line-height: 1.15; letter-spacing: -1.4px; }
+.section-heading > p { max-width: 320px; margin: 0; color: var(--muted); font-size: 14px; line-height: 1.7; }
+.prices__grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; }
+.prices__card { display: flex; flex-direction: column; padding: 28px; background: var(--background); border: 1px solid var(--border); border-radius: 10px; }
+.prices__card h3 { font-size: 20px; margin: 0 0 12px; }
+.prices__card > p { color: var(--muted); font-size: 13px; line-height: 1.6; margin: 0; min-height: 44px; }
+.prices__card dl { margin: 24px 0; }
+.prices__card dl > div { display: flex; justify-content: space-between; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+.prices__card dt { color: #f7f4fa; }
+.prices__card dd { margin: 0; font-weight: 700; }
+.prices__card > a { display: flex; justify-content: space-between; align-items: center; min-height: 44px; color: var(--accent-light); text-decoration: none; margin-top: auto; font-size: 14px; }
+.prices__card > a:hover { color: #fff; }
+.booking-cta { width: var(--container); margin: 16px auto 88px; padding: 48px; display: flex; align-items: center; justify-content: space-between; gap: 32px; border: 1px solid #d100ff55; border-radius: 12px; background: linear-gradient(110deg,#271333,#151019); }
+.booking-cta h2 { margin: 0 0 12px; font-size: clamp(28px,3.2vw,42px); letter-spacing: -1px; }
+.booking-cta p { color: var(--muted); margin: 0; line-height: 1.6; }
+.booking-cta .hero__button { flex-shrink: 0; }
+@media(max-width: 800px) { .prices__grid { grid-template-columns: 1fr; } .section-heading { align-items: start; flex-direction: column; gap: 18px; } .section-heading > p { max-width: 500px; } .prices__card > p { min-height: auto; } .booking-cta { flex-direction: column; align-items: start; padding: 28px; } }
+@media(max-width: 600px) { .prices { padding: 64px 0; } .booking-cta { margin-bottom: 64px; } }

@@ -119,6 +119,12 @@
    MAIN FORM
 ========================================= */
 
+.booking__fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.booking__notice { color: #c4b9cb; line-height: 1.6; margin-top: 20px; }
+.booking__message { padding: 18px; margin: 18px 0; border: 1px solid #b46380; color: #ffd4e3; line-height: 1.6; }
+.booking__message button, .booking__action { padding: 10px 16px; margin: 10px; cursor: pointer; background: #29202f; color: white; border: 1px solid #705080; }
+.booking__field > input { margin-top: 10px; margin-bottom: 20px; }
+.booking__fieldset:disabled { opacity: .65; }
 .booking {
   width: 100%;
 
@@ -545,7 +551,6 @@
 
 /* =========================================
    DURATION
-   СТАРЫЙ ВАРИАНТ — НЕ SELECT
 ========================================= */
 
 .booking__duration {
@@ -554,7 +559,17 @@
   gap: 15px;
 }
 
-.booking__duration input {
+.booking__duration label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+}
+
+.booking__duration input,
+.booking__duration select {
   width: 120px;
   height: 58px;
 
@@ -577,11 +592,13 @@
   transition: border-color 0.25s ease;
 }
 
-.booking__duration input:hover {
+.booking__duration input:hover,
+.booking__duration select:hover {
   border-color: rgba(209, 0, 255, 0.5);
 }
 
-.booking__duration input:focus {
+.booking__duration input:focus,
+.booking__duration select:focus {
   border-color: #d100ff;
 }
 

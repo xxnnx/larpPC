@@ -2,7 +2,6 @@ import { Link, useParams } from 'react-router-dom';
 import {
   LuArrowLeft,
   LuCheck,
-  LuClock3,
   LuMonitor,
   LuMouse,
   LuCpu,
@@ -13,6 +12,8 @@ import {
 
 import zones from '../../data/zones';
 import './ZoneDetails.css';
+import LiveTariffs from '../../components/Prices/LiveTariffs';
+import '../../components/Prices/Prices.css';
 
 function ZoneDetails() {
   const { id } = useParams();
@@ -84,15 +85,7 @@ function ZoneDetails() {
           <div className="zone-details__hero-bottom">
 
             <div className="zone-details__price">
-              <span>ОТ</span>
-
-              <strong>
-                {zone.price} ₽
-              </strong>
-
-              <span>
-                / ЧАС
-              </span>
+              <a href="#zone-tariffs">Актуальные тарифы ↓</a>
             </div>
 
             <Link
@@ -225,7 +218,7 @@ function ZoneDetails() {
 
       {/* TARIFFS */}
 
-      <section className="zone-details__tariffs">
+      <section className="zone-details__tariffs" id="zone-tariffs">
 
         <div className="zone-details__section-header">
 
@@ -241,35 +234,7 @@ function ZoneDetails() {
 
         </div>
 
-        <div className="zone-details__tariffs-grid">
-
-          {zone.tariffs.map((tariff) => (
-            <Link
-              to={`/booking?zone=${zone.id}&duration=${tariff.hours}`}
-              className="zone-details__tariff"
-              key={tariff.duration}
-            >
-              <LuClock3 />
-
-              <span className="zone-details__tariff-duration">
-                {tariff.duration}
-              </span>
-
-              <strong className="zone-details__tariff-price">
-                {tariff.price}
-              </strong>
-
-              <span className="zone-details__tariff-label">
-                ЗА ИГРОВОЕ МЕСТО
-              </span>
-
-              <span className="zone-details__tariff-action">
-                Выбрать →
-              </span>
-            </Link>
-          ))}
-
-        </div>
+        <LiveTariffs roomName={zone.name} />
 
         <Link
           to={`/booking?zone=${zone.id}`}

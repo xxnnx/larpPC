@@ -1,0 +1,5 @@
+.section h2 { margin: 28px 0 20px; }
+.section h3 { margin: 0 0 8px; font-size: 18px; overflow-wrap: anywhere; }
+.section p { line-height: 1.6; }
+.toolbar { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; }
+.toolbar p { color: var(--muted); }

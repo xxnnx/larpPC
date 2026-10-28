@@ -130,6 +130,7 @@ function Gallery() {
                 }`}
                 onClick={() => goToSlide(index)}
                 aria-label={`Открыть фото ${index + 1}`}
+                aria-pressed={index === currentIndex}
               />
             ))}
           </div>

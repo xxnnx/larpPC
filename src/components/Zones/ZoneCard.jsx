@@ -4,8 +4,8 @@ import './ZoneCard.css';
 function ZoneCard({
   id,
   name,
+  label,
   description,
-  price,
   image,
 }) {
   return (
@@ -24,7 +24,7 @@ function ZoneCard({
       <div className="zone-card__content">
 
         <span className="zone-card__label">
-          ИГРОВАЯ ЗОНА
+          {label}
         </span>
 
         <h3 className="zone-card__title">
@@ -38,7 +38,7 @@ function ZoneCard({
         <div className="zone-card__bottom">
 
           <span className="zone-card__price">
-            от {price} ₽ / час
+            Оборудование и тарифы
           </span>
 
           <Link

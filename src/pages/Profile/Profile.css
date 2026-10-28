@@ -1,3 +1,7 @@
+.profile-refresh, .profile-confirm button { padding: 12px 18px; margin: 6px; border: 1px solid #705080; background: #29202f; color: white; cursor: pointer; }
+.profile-refresh:disabled, .profile-confirm button:disabled { opacity: .5; cursor: wait; }
+.profile-confirm { max-width: 260px; }
+.booking-card__info p { overflow-wrap: anywhere; }
 .profile-page {
   min-height: 100vh;
 

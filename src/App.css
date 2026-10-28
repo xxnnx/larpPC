@@ -1,0 +1,51 @@
+/* Shared visual rhythm across existing components. */
+.zones, .gallery, .popular-games { padding: 88px 0; background: var(--background); }
+.zones::before, .popular-games::before { display: none; }
+.zones__container, .gallery__container, .popular-games__container, .footer__container { width: var(--container); }
+.zones__header, .gallery__header, .popular-games__header { margin-bottom: 36px; }
+.zones__eyebrow, .gallery__eyebrow, .popular-games__eyebrow { position: static; transform: none; display: block; color: var(--accent-light); font: 600 12px 'Segoe UI', sans-serif; letter-spacing: 2px; margin-bottom: 16px; }
+.zones__title, .gallery__title, .popular-games__title { font-family: 'Segoe UI', Arial, sans-serif; font-size: clamp(28px,3.4vw,44px); line-height: 1.15; letter-spacing: -1.4px; }
+.zones__title span, .gallery__title span, .popular-games__title span { color: #b3aabd; }
+.zones__description, .popular-games__description { color: var(--muted); font-size: 14px; line-height: 1.7; }
+.zones__description { margin-top: 18px; }
+.zone-card { min-height: 450px; border-radius: 10px; }
+.zone-card:hover { transform: translateY(-4px); }
+.zone-card__content { padding: 24px; }
+.zone-card__title { font-size: 28px; }
+.zone-card__overlay { background: linear-gradient(180deg, #0c0b1000 15%, #0c0b1066 35%, #0c0b10f5 80%); }
+.zone-card__label { color: var(--accent-light); font-size: 10px; letter-spacing: 2px; }
+.zone-card__description { color: #c7c0d0; min-height: 44px; }
+.zone-card__bottom { flex-wrap: wrap; gap: 6px 12px; border-top: 1px solid var(--border); padding-top: 14px; }
+.zone-card__link { min-height: 44px; }
+.gallery { border-top: 1px solid var(--border); }
+.gallery__slider { grid-template-columns: 120px minmax(0,1fr) 120px; min-height: 420px; gap: 16px; }
+.gallery__side, .gallery__main { height: 420px; }
+.gallery__side { height: 340px; opacity: .45; }
+.gallery__arrow--left { left: 110px; }
+.gallery__arrow--right { right: 110px; }
+.gallery__dot { height: 28px; background: linear-gradient(#ffffff55,#ffffff55) center / 100% 3px no-repeat; }
+.gallery__dot--active { background: linear-gradient(var(--accent),var(--accent)) center / 100% 3px no-repeat; }
+.gallery__dot:hover { background: linear-gradient(#e580ff,#e580ff) center / 100% 3px no-repeat; }
+.gallery__counter { color: var(--muted); }
+.popular-games__header { display: grid; grid-template-columns: 1fr auto; column-gap: 40px; row-gap: 0; }
+.popular-games__eyebrow { grid-column: 1 / -1; }
+.popular-games__description { align-self: end; }
+
+
+
+.game-card__genre, .game-card__zone { color: var(--accent-light); }
+.game-card__zone { min-height: 36px; }
+.popular-games__footer > span { color: var(--muted); }
+.footer { background: #100e15; border-top: 1px solid var(--border); }
+.footer__tagline, .footer__contact-label, .footer__navigation-link, .footer__copyright, .footer__bottom-text { color: var(--muted); }
+.booking-page, .auth-page, .register-page, .profile-page { background-color: var(--background); }
+.booking { border-radius: 12px; border-color: var(--border); background: #16131ce6; }
+.booking__zone, .booking__time, .booking__date-picker, .booking__submit { border-radius: 6px; }
+.booking__message { margin: 20px 0; padding: 16px 20px; border: 1px solid; border-radius: 8px; line-height: 1.6; }
+.booking__message--error { color: #ffbdcc; border-color: #ff789a60; background: #431c2a; }
+.booking__message--success { color: #b5f4ca; border-color: #83dca660; background: #173526; }
+.booking__hint { color: var(--muted); }
+@media(max-width: 950px) { .zones__grid { gap: 16px; } .zone-card__content { padding: 18px; } .zone-card__title { font-size: 24px; } .popular-games__header { grid-template-columns: 1fr; gap: 0; } .popular-games__description { margin-top: 18px; } }
+@media(max-width: 700px) { .zones__grid { grid-template-columns: 1fr; } .zone-card { min-height: 410px; } .zone-card__content { padding: 24px; } .gallery__slider { grid-template-columns: 1fr; min-height: 300px; } .gallery__side { display: none; } .gallery__main { height: 300px; } .gallery__arrow--left { left: 12px; } .gallery__arrow--right { right: 12px; } .gallery__arrow { width: 44px; height: 44px; } }
+@media(max-width: 600px) { .zones, .gallery, .popular-games { padding: 64px 0; }  .booking-page__title { font-size: 28px; letter-spacing: -.5px; overflow-wrap: anywhere; } }
+

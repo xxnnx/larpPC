@@ -1,27 +1,33 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth } from "../../context/AuthContext";
 import './Login.css';
+import { getAuthError } from '../../api/authApi';
 
 function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
 
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(location.state?.email || '');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
-    const user = {
-      name: 'Иван',
-      email,
-      role: 'client',
-    };
-
-    login(user);
-
-    navigate('/profile');
+    if (submitting) return;
+    setError('');
+    setSubmitting(true);
+    try {
+      await login({ email: email.trim(), password });
+      const destination = location.state?.from;
+      navigate(typeof destination === 'string' && destination.startsWith('/') && !destination.startsWith('//') ? destination : '/profile', { replace: true });
+    } catch (err) {
+      setError(getAuthError(err, 'Не удалось войти. Попробуй ещё раз.'));
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -35,7 +41,7 @@ function Login() {
         <div className="auth-page__content">
           <div className="auth-page__header">
             <span className="auth-page__eyebrow">
-              КИБЕРТЕКА
+              GAMESENSE
             </span>
 
             <h1>ВХОД</h1>
@@ -49,7 +55,10 @@ function Login() {
           <form
             className="auth-form"
             onSubmit={handleSubmit}
+            aria-busy={submitting}
           >
+            {location.state?.registered && <p className="auth-feedback" role="status">Аккаунт создан. Войди с новым паролем.</p>}
+            {error && <p className="auth-feedback auth-feedback--error" role="alert">{error}</p>}
             <div className="auth-form__field">
               <label htmlFor="email">
                 EMAIL
@@ -57,6 +66,8 @@ function Login() {
 
               <input
                 id="email"
+                autoComplete="username"
+                disabled={submitting}
                 type="email"
                 value={email}
                 onChange={(event) =>
@@ -74,6 +85,8 @@ function Login() {
 
               <input
                 id="password"
+                autoComplete="current-password"
+                disabled={submitting}
                 type="password"
                 value={password}
                 onChange={(event) =>
@@ -87,8 +100,9 @@ function Login() {
             <button
               type="submit"
               className="auth-form__submit"
+              disabled={submitting}
             >
-              ВОЙТИ
+              {submitting ? 'ВХОД…' : 'ВОЙТИ'}
               <span>→</span>
             </button>
           </form>
@@ -98,7 +112,7 @@ function Login() {
               Ещё нет аккаунта?
             </span>
 
-            <Link to="/register">
+            <Link to="/register" state={{ from: location.state?.from }}>
               ЗАРЕГИСТРИРОВАТЬСЯ
             </Link>
           </div>

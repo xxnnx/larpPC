@@ -10,7 +10,7 @@ function Footer() {
   ];
 
   return (
-    <footer className="footer">
+    <footer className="footer" id="contacts">
       <div className="footer__container">
 
         <div className="footer__main">
@@ -21,7 +21,7 @@ function Footer() {
             </a>
 
             <span className="footer__tagline">
-              ПОЧУВСТВУЙ
+              ТВОЁ МЕСТО. ТВОЯ ИГРА.
             </span>
           </div>
 
@@ -52,7 +52,7 @@ function Footer() {
               </span>
 
               <a
-                href="tel:+79773208888"
+                href="tel:+79085101773"
                 className="footer__contact-value footer__contact-link"
               >
                 7 908 510 17 73
@@ -82,7 +82,7 @@ function Footer() {
 
         <div className="footer__bottom">
           <span className="footer__copyright">
-            © 2026 КИБЕРТЕКА
+            © 2026 GAMESENSE
           </span>
 
           <span className="footer__bottom-text">

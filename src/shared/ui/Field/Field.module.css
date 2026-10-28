@@ -1,0 +1,6 @@
+.field { display: flex; flex-direction: column; gap: 8px; min-width: 0; color: var(--muted); }
+.control { width: 100%; min-width: 0; border: 1px solid #63576e; border-radius: 6px; background: var(--background); color: #f7f4fa; padding: 12px; font: inherit; }
+.control[readonly], .control:disabled { opacity: .65; }
+.control:focus-visible { outline: 2px solid var(--accent-light); outline-offset: 2px; }
+.control[aria-invalid] { border-color: #aa5067; }
+.error { color: #ffbbcd; font-size: 14px; }

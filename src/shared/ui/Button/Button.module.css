@@ -1,0 +1,4 @@
+.button { border: 1px solid var(--border); background: var(--surface); color: #f7f4fa; padding: 12px 18px; border-radius: 8px; cursor: pointer; font: inherit; }
+.button:hover:not(:disabled) { border-color: var(--accent-light); }
+.button:disabled { opacity: .5; cursor: default; }
+.button:focus-visible { outline: 2px solid var(--accent-light); outline-offset: 3px; }

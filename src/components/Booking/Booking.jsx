@@ -1,924 +1,161 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import SeatMap from '../SeatMap/SeatMap';
-import DatePicker from 'react-datepicker';
-
-import {
-  getZones,
-  getResources,
-  getAvailability,
-  createBooking,
-} from '../../api/bookingApi';
-
-import 'react-datepicker/dist/react-datepicker.css';
+import { getZones, getResources, getTariffs, createBooking, apiError } from '../../api/bookingApi';
+import { clubDateTime, bookingDate, endDateTime, displayDateTime, displayDuration, matchRoom, money } from '../../utils/booking';
 import './Booking.css';
 
-function Booking() {
-  const [searchParams] = useSearchParams();
-
-  const zoneFromUrl = searchParams.get('zone');
-  const gameFromUrl = searchParams.get('game');
-
-  // =========================================
-  // DATA FROM BACKEND
-  // =========================================
-
-  const [zones, setZones] = useState([]);
-  const [resources, setResources] = useState([]);
-  const [availableTimes, setAvailableTimes] = useState([]);
-
-  // =========================================
-  // BOOKING STATE
-  // =========================================
-
-  const [zone, setZone] = useState(zoneFromUrl || '');
-  const [date, setDate] = useState(null);
-  const [resource, setResource] = useState('');
-  const [time, setTime] = useState('');
-  const [duration, setDuration] = useState(1);
-
-  // =========================================
-  // LOADING / ERRORS
-  // =========================================
-
-  const [zonesLoading, setZonesLoading] = useState(true);
-  const [resourcesLoading, setResourcesLoading] = useState(false);
-  const [availabilityLoading, setAvailabilityLoading] =
-    useState(false);
-  const [bookingLoading, setBookingLoading] = useState(false);
-
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-
-  // =========================================
-  // LOAD ZONES
-  // =========================================
-
-  useEffect(() => {
-    async function loadZones() {
-      try {
-        setZonesLoading(true);
-        setError('');
-
-        const data = await getZones();
-
-        const normalizedZones = Array.isArray(data)
-          ? data
-          : [];
-
-        setZones(normalizedZones);
-
-        // Проверяем зону из URL
-        if (zoneFromUrl) {
-          const zoneExists = normalizedZones.some(
-            (item) => String(item.id) === String(zoneFromUrl)
-          );
-
-          if (!zoneExists) {
-            setZone('');
-          }
-        }
-      } catch (err) {
-        console.error(err);
-        setError('Не удалось загрузить игровые зоны.');
-      } finally {
-        setZonesLoading(false);
-      }
-    }
-
-    loadZones();
-  }, [zoneFromUrl]);
-
-  // =========================================
-  // SELECTED ZONE
-  // =========================================
-
-  const selectedZone = useMemo(() => {
-    return zones.find(
-      (item) => String(item.id) === String(zone)
-    );
-  }, [zones, zone]);
-
-  // =========================================
-  // LOAD RESOURCES
-  // =========================================
-
-  useEffect(() => {
-    async function loadResources() {
-      if (!zone) {
-        setResources([]);
-        setResource('');
-        setTime('');
-        setAvailableTimes([]);
-        return;
-      }
-
-      try {
-        setResourcesLoading(true);
-        setError('');
-
-        const data = await getResources(zone);
-
-        const normalizedResources = Array.isArray(data)
-          ? data
-          : [];
-
-        setResources(normalizedResources);
-
-        setResource('');
-        setTime('');
-        setAvailableTimes([]);
-      } catch (err) {
-        console.error(err);
-
-        setResources([]);
-        setResource('');
-        setTime('');
-        setAvailableTimes([]);
-
-        setError(
-          'Не удалось загрузить игровые места.'
-        );
-      } finally {
-        setResourcesLoading(false);
-      }
-    }
-
-    loadResources();
-  }, [zone]);
-
-  // =========================================
-  // SELECTED RESOURCE
-  // =========================================
-
-  const selectedResource = useMemo(() => {
-    return resources.find(
-      (item) =>
-        String(item.id) === String(resource)
-    );
-  }, [resources, resource]);
-
-  // =========================================
-  // LOAD AVAILABILITY
-  // =========================================
-
-  useEffect(() => {
-    async function loadAvailability() {
-      if (!resource || !date) {
-        setAvailableTimes([]);
-        return;
-      }
-
-      try {
-        setAvailabilityLoading(true);
-        setError('');
-
-        const dateString = date
-          .toISOString()
-          .split('T')[0];
-
-        const data = await getAvailability(
-          resource,
-          dateString
-        );
-
-        let times = [];
-
-       
-
-        if (Array.isArray(data)) {
-          times = data
-            .map((item) => {
-              if (typeof item === 'string') {
-                return item;
-              }
-
-              return item?.time || null;
-            })
-            .filter(Boolean);
-        } else if (
-          data &&
-          data.availableFrom &&
-          data.availableTo
-        ) {
-          const [fromHour] = data.availableFrom
-            .split(':')
-            .map(Number);
-
-          const [toHour] = data.availableTo
-            .split(':')
-            .map(Number);
-
-          for (
-            let hour = fromHour;
-            hour < toHour;
-            hour += 1
-          ) {
-            times.push(
-              `${String(hour).padStart(2, '0')}:00`
-            );
-          }
-        }
-
-        setAvailableTimes(times);
-        setTime('');
-        setDuration(1);
-      } catch (err) {
-        console.error(err);
-
-        setAvailableTimes([]);
-        setTime('');
-
-        setError(
-          'Не удалось получить свободное время.'
-        );
-      } finally {
-        setAvailabilityLoading(false);
-      }
-    }
-
-    loadAvailability();
-  }, [resource, date]);
-
-  // =========================================
-  // MAX DURATION
-  // =========================================
-
-  const maxDuration = useMemo(() => {
-    if (!selectedResource || !time) {
-      return 1;
-    }
-
-    /*
-     
-     */
-
-    if (selectedResource.availableTo) {
-      const startHour = Number(
-        time.split(':')[0]
-      );
-
-      const endHour = Number(
-        selectedResource.availableTo.split(':')[0]
-      );
-
-      return Math.max(
-        endHour - startHour,
-        1
-      );
-    }
-
-    /*
-     *
-     */
-
-    const timeIndex =
-      availableTimes.indexOf(time);
-
-    if (timeIndex === -1) {
-      return 1;
-    }
-
-    return Math.max(
-      availableTimes.length - timeIndex,
-      1
-    );
-  }, [
-    selectedResource,
-    time,
-    availableTimes,
-  ]);
-
-  // =========================================
-  // ZONE
-  // =========================================
-
-  const handleZoneChange = (zoneId) => {
-    setZone(zoneId);
-
-    setResource('');
-    setTime('');
-    setDuration(1);
-
-    setSuccess('');
-    setError('');
-  };
-
-  // =========================================
-  // DATE
-  // =========================================
-
-  const handleDateChange = (selectedDate) => {
-    setDate(selectedDate);
-
-    setResource('');
-    setTime('');
-    setDuration(1);
-
-    setSuccess('');
-    setError('');
-  };
-
-  // =========================================
-  // RESOURCE
-  // =========================================
-
-  const handleResourceChange = (resourceId) => {
-    setResource(resourceId);
-
-    setTime('');
-    setDuration(1);
-
-    setSuccess('');
-    setError('');
-  };
-
-  // =========================================
-  // TIME
-  // =========================================
-
-  const handleTimeChange = (selectedTime) => {
-    setTime(selectedTime);
-    setDuration(1);
-
-    setSuccess('');
-    setError('');
-  };
-
-  // =========================================
-  // DURATION
-  // =========================================
-
-  const handleDurationChange = (event) => {
-    const value = Number(
-      event.target.value
-    );
-
-    if (value < 1) {
-      setDuration(1);
-      return;
-    }
-
-    if (value > maxDuration) {
-      setDuration(maxDuration);
-      return;
-    }
-
-    setDuration(value);
-  };
-
-  // =========================================
-  // PRICE
-  // =========================================
-
-  const pricePerHour = Number(
-    selectedZone?.price || 0
-  );
-
-  const totalPrice =
-    pricePerHour * Number(duration);
-
-  // =========================================
-  // FORM READY
-  // =========================================
-
-  const isBookingReady =
-    Boolean(zone) &&
-    Boolean(date) &&
-    Boolean(resource) &&
-    Boolean(time) &&
-    Number(duration) > 0;
-
-  // =========================================
-  // SUBMIT
-  // =========================================
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    setError('');
-    setSuccess('');
-
-    if (!isBookingReady) {
-      setError(
-        'Заполни все поля бронирования.'
-      );
-      return;
-    }
-
-    try {
-      setBookingLoading(true);
-
-      const bookingData = {
-        zoneId: zone,
-        resourceId: resource,
-        date: date
-          .toISOString()
-          .split('T')[0],
-        startTime: time,
-        duration: Math.min(
-          Number(duration),
-          maxDuration
-        ),
-        game: gameFromUrl || null,
-      };
-
-      await createBooking(bookingData);
-
-      setSuccess(
-        'Бронирование успешно создано!'
-      );
-
-      // Обновляем доступность после бронирования
-
-      const updatedAvailability =
-        await getAvailability(
-          resource,
-          date
-            .toISOString()
-            .split('T')[0]
-        );
-
-      let updatedTimes = [];
-
-      if (Array.isArray(updatedAvailability)) {
-        updatedTimes =
-          updatedAvailability
-            .map((item) => {
-              if (
-                typeof item === 'string'
-              ) {
-                return item;
-              }
-
-              return item?.time || null;
-            })
-            .filter(Boolean);
-      }
-
-      setAvailableTimes(updatedTimes);
-
-      setTime('');
-      setDuration(1);
-    } catch (err) {
-      console.error(err);
-
-      setError(
-        err?.message ||
-          'Не удалось создать бронирование. Возможно, выбранное время уже занято.'
-      );
-    } finally {
-      setBookingLoading(false);
-    }
-  };
-
-  // =========================================
-  // RENDER
-  // =========================================
-
-  return (
-    <main className="booking-page">
-      <div className="booking-page__container">
-
-        {/* BACK */}
-
-        <Link
-          to="/"
-          className="booking-page__back"
-        >
-          <span>←</span>
-          На главную
-        </Link>
-
-        {/* HEADER */}
-
-        <div className="booking-page__header">
-
-          <span className="booking-page__eyebrow">
-            КИБЕРТЕКА
-          </span>
-
-          <h1 className="booking-page__title">
-            БРОНИРОВАНИЕ
-          </h1>
-
-          {gameFromUrl && (
-            <div className="booking-page__game">
-              <span>
-                ТЫ ХОЧЕШЬ ИГРАТЬ
-              </span>
-
-              <strong>
-                {decodeURIComponent(
-                  gameFromUrl
-                )}
-              </strong>
-            </div>
-          )}
-
-        </div>
-
-        {/* ERROR */}
-
-        {error && (
-          <div className="booking__message booking__message--error">
-            {error}
-          </div>
-        )}
-
-        {/* SUCCESS */}
-
-        {success && (
-          <div className="booking__message booking__message--success">
-            {success}
-          </div>
-        )}
-
-        <form
-          className="booking"
-          onSubmit={handleSubmit}
-        >
-
-          {/* =================================
-              ZONE
-          ================================== */}
-
-          <section className="booking__step">
-
-            <div className="booking__step-header">
-
-              <span className="booking__step-number">
-                01
-              </span>
-
-              <div>
-                <span className="booking__step-label">
-                  ШАГ 01
-                </span>
-
-                <h2>
-                  ВЫБЕРИ ЗОНУ
-                </h2>
-              </div>
-
-            </div>
-
-            {zonesLoading ? (
-              <p className="booking__hint">
-                Загружаем игровые зоны...
-              </p>
-            ) : (
-              <div className="booking__zones">
-
-                {zones.map((item) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    className={`booking__zone ${
-                      String(zone) ===
-                      String(item.id)
-                        ? 'booking__zone--active'
-                        : ''
-                    }`}
-                    onClick={() =>
-                      handleZoneChange(
-                        item.id
-                      )
-                    }
-                  >
-
-                    <span>
-                      {item.name}
-                    </span>
-
-                    <small>
-                      от {item.price} ₽ / час
-                    </small>
-
-                  </button>
-                ))}
-
-              </div>
-            )}
-
-          </section>
-
-          {/* =================================
-              DATE
-          ================================== */}
-
-          <section className="booking__step">
-
-            <div className="booking__step-header">
-
-              <span className="booking__step-number">
-                02
-              </span>
-
-              <div>
-                <span className="booking__step-label">
-                  ШАГ 02
-                </span>
-
-                <h2>
-                  ВЫБЕРИ ДАТУ
-                </h2>
-              </div>
-
-            </div>
-
-            <div className="booking__field">
-
-              <DatePicker
-                selected={date}
-                onChange={handleDateChange}
-                minDate={new Date()}
-                dateFormat="dd.MM.yyyy"
-                placeholderText="Выберите дату"
-                className="booking__date-picker"
-              />
-
-            </div>
-
-          </section>
-
-          {/* =================================
-              RESOURCE
-          ================================== */}
-
-          <section className="booking__step">
-
-            <div className="booking__step-header">
-
-              <span className="booking__step-number">
-                03
-              </span>
-
-              <div>
-                <span className="booking__step-label">
-                  ШАГ 03
-                </span>
-
-                <h2>
-                  ВЫБЕРИ ИГРОВОЕ МЕСТО
-                </h2>
-              </div>
-
-            </div>
-
-            {!zone ? (
-              <p className="booking__hint">
-                Сначала выбери игровую зону.
-              </p>
-            ) : !date ? (
-              <p className="booking__hint">
-                Сначала выбери дату.
-              </p>
-            ) : resourcesLoading ? (
-              <p className="booking__hint">
-                Загружаем игровые места...
-              </p>
-            ) : resources.length === 0 ? (
-              <p className="booking__hint">
-                В этой зоне нет игровых мест.
-              </p>
-            ) : (
-              <SeatMap
-                computers={resources.map(item => ({
-                  id: item.id,
-                  
-                  number: item.name, 
-                  
-                  status: item.available !== false ? 'AVAILABLE' : 'OCCUPIED' 
-                }))}
-                selectedSeat={resource} 
-                onSelect={handleResourceChange} 
-              />
-              // <div className="booking__resources">
-
-              //   {resources.map((item) => {
-
-              //     const isAvailable =
-              //       item.available !== false;
-
-              //     const isActive =
-              //       String(resource) ===
-              //       String(item.id);
-
-              //     return (
-              //       <button
-              //         key={item.id}
-              //         type="button"
-              //         disabled={!isAvailable}
-              //         className={`
-              //           booking__resource
-              //           ${
-              //             isActive
-              //               ? 'booking__resource--active'
-              //               : ''
-              //           }
-              //           ${
-              //             !isAvailable
-              //               ? 'booking__resource--busy'
-              //               : ''
-              //           }
-              //         `}
-              //         onClick={() =>
-              //           handleResourceChange(
-              //             item.id
-              //           )
-              //         }
-              //       >
-
-              //         <strong>
-              //           {item.name}
-              //         </strong>
-
-              //         <span>
-              //           {isAvailable
-              //             ? item.availableFrom &&
-              //               item.availableTo
-              //               ? `${item.availableFrom} — ${item.availableTo}`
-              //               : 'СВОБОДНО'
-              //             : 'ЗАНЯТО'}
-              //         </span>
-
-              //       </button>
-              //     );
-              //   })}
-
-              // </div>
-            )}
-
-          </section>
-
-          {/* =================================
-              TIME
-          ================================== */}
-
-          <section className="booking__step">
-
-            <div className="booking__step-header">
-
-              <span className="booking__step-number">
-                04
-              </span>
-
-              <div>
-                <span className="booking__step-label">
-                  ШАГ 04
-                </span>
-
-                <h2>
-                  ВЫБЕРИ ВРЕМЯ НАЧАЛА
-                </h2>
-              </div>
-
-            </div>
-
-            {!resource ? (
-              <p className="booking__hint">
-                Сначала выбери игровое место.
-              </p>
-            ) : availabilityLoading ? (
-              <p className="booking__hint">
-                Проверяем свободное время...
-              </p>
-            ) : availableTimes.length === 0 ? (
-              <p className="booking__hint">
-                На выбранную дату свободного времени нет.
-              </p>
-            ) : (
-              <div className="booking__times">
-
-                {availableTimes.map(
-                  (availableTime) => (
-                    <button
-                      key={availableTime}
-                      type="button"
-                      className={`
-                        booking__time
-                        ${
-                          time === availableTime
-                            ? 'booking__time--active'
-                            : ''
-                        }
-                      `}
-                      onClick={() =>
-                        handleTimeChange(
-                          availableTime
-                        )
-                      }
-                    >
-                      {availableTime}
-                    </button>
-                  )
-                )}
-
-              </div>
-            )}
-
-          </section>
-
-          {/* =================================
-              DURATION
-          ================================== */}
-
-          <section className="booking__step">
-
-            <div className="booking__step-header">
-
-              <span className="booking__step-number">
-                05
-              </span>
-
-              <div>
-                <span className="booking__step-label">
-                  ШАГ 05
-                </span>
-
-                <h2>
-                  ВЫБЕРИ ДЛИТЕЛЬНОСТЬ
-                </h2>
-              </div>
-
-            </div>
-
-            {!time ? (
-              <p className="booking__hint">
-                Сначала выбери время начала.
-              </p>
-            ) : (
-              <div className="booking__duration">
-
-                <input
-                  type="number"
-                  min="1"
-                  max={maxDuration}
-                  value={duration}
-                  onChange={
-                    handleDurationChange
-                  }
-                />
-
-                <span>
-                  часа
-                </span>
-
-                <small>
-                  Максимум: {maxDuration} ч.
-                </small>
-
-              </div>
-            )}
-
-          </section>
-
-          {/* =================================
-              SUMMARY
-          ================================== */}
-
-          <div className="booking__summary">
-
-            <div className="booking__summary-info">
-
-              <span>
-                ИТОГО
-              </span>
-
-              <strong>
-                {totalPrice.toLocaleString(
-                  'ru-RU'
-                )}{' '}
-                ₽
-              </strong>
-
-            </div>
-
-            <button
-              type="submit"
-              className="booking__submit"
-              disabled={
-                !isBookingReady ||
-                bookingLoading
-              }
-            >
-              {bookingLoading
-                ? 'БРОНИРОВАНИЕ...'
-                : 'ЗАБРОНИРОВАТЬ'}
-
-              <span>
-                →
-              </span>
-            </button>
-
-          </div>
-
-        </form>
-
-      </div>
-    </main>
-  );
+function Step({ number, title, children }) {
+  return <section className="booking__step">
+    <div className="booking__step-header"><span className="booking__step-number">{number}</span><h2>{title}</h2></div>
+    {children}
+  </section>;
 }
 
-export default Booking;
+export default function Booking() {
+  const [params] = useSearchParams();
+  const hint = params.get('room') || params.get('zone');
+  const tariffHint = params.get('tariff');
+  const durationHint = Number(params.get('duration'));
+  const [rooms, setRooms] = useState([]);
+  const [roomId, setRoomId] = useState('');
+  const [catalog, setCatalog] = useState({ roomId: '', computers: [], tariffs: [] });
+  const [computerId, setComputerId] = useState('');
+  const [tariffId, setTariffId] = useState('');
+  const [start, setStart] = useState('');
+  const [hours, setHours] = useState(1);
+  const [minutes, setMinutes] = useState(0);
+  const [loadingRooms, setLoadingRooms] = useState(true);
+  const [loadingPlaces, setLoadingPlaces] = useState(false);
+  const [loadError, setLoadError] = useState('');
+  const [error, setError] = useState('');
+  const [retry, setRetry] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
+  const [created, setCreated] = useState(null);
+  const submitLock = useRef(false);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    setLoadingRooms(true);
+    setLoadError('');
+    getZones(controller.signal).then(data => {
+      setRooms(data);
+      setRoomId(String(matchRoom(data, hint)?.id || ''));
+    }).catch(err => { if (!controller.signal.aborted) setLoadError(apiError(err)); })
+      .finally(() => { if (!controller.signal.aborted) setLoadingRooms(false); });
+    return () => controller.abort();
+  }, [hint, retry]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    setComputerId('');
+    setTariffId('');
+    if (!roomId) return () => controller.abort();
+    setLoadingPlaces(true);
+    setLoadError('');
+    Promise.all([getResources(roomId, controller.signal), getTariffs(roomId, controller.signal)])
+      .then(([computers, allTariffs]) => {
+        const tariffs = allTariffs.filter(item => item.active && ['HOURLY', 'PACKAGE'].includes(item.tariffType));
+        setCatalog({ roomId, computers, tariffs });
+        const selected = tariffs.find(item => String(item.id) === tariffHint)
+          || tariffs.find(item => item.tariffType === 'PACKAGE' && item.durationMinutes === durationHint * 60);
+        setTariffId(selected ? String(selected.id) : '');
+        const hintedMinutes = durationHint * 60;
+        const validHint = Number.isInteger(hintedMinutes) && hintedMinutes >= 30 && hintedMinutes <= 525600 && hintedMinutes % 30 === 0;
+        setHours(validHint ? Math.floor(hintedMinutes / 60) : 1);
+        setMinutes(validHint ? hintedMinutes % 60 : 0);
+      }).catch(err => { if (!controller.signal.aborted) setLoadError(apiError(err)); })
+      .finally(() => { if (!controller.signal.aborted) setLoadingPlaces(false); });
+    return () => controller.abort();
+  }, [roomId, tariffHint, durationHint, retry]);
+
+  const { computers, tariffs } = catalog.roomId === roomId ? catalog : { computers: [], tariffs: [] };
+  const tariff = tariffs.find(item => String(item.id) === tariffId);
+  const computer = computers.find(item => String(item.id) === String(computerId));
+  const duration = tariff?.tariffType === 'PACKAGE' ? Number(tariff.durationMinutes) : Number(hours) * 60 + Number(minutes);
+  const validTime = start && Number.isFinite(bookingDate(start).getTime()) && bookingDate(start) > new Date();
+  const validDuration = Number.isInteger(duration) && duration > 0 && duration <= 525600
+    && (tariff?.tariffType === 'PACKAGE' || (duration >= 30 && duration % 30 === 0));
+  const end = start && validDuration && Number.isFinite(bookingDate(start).getTime()) ? endDateTime(start, duration) : '';
+  const price = tariff ? Number(tariff.price) * (tariff.tariffType === 'PACKAGE' ? 1 : duration / 60) : 0;
+  const ready = computer?.status === 'AVAILABLE' && tariff && validTime && validDuration && !loadingPlaces && !loadError;
+
+  async function submit(event) {
+    event.preventDefault();
+    if (submitLock.current) return;
+    setError('');
+    if (!ready) { setError('Выбери место, тариф и время в будущем.'); return; }
+    submitLock.current = true;
+    setSubmitting(true);
+    try {
+      const booking = await createBooking({
+        computerId: computer.id, tariffId: tariff.id,
+        startTime: start + ':00', endTime: end,
+      });
+      setCreated(booking);
+    } catch (err) {
+      setError(!err.response && err.request
+        ? 'Ответ сервера не получен. Бронь могла сохраниться: проверь личный кабинет перед повторной отправкой.'
+        : apiError(err, 'Не удалось создать бронирование.'));
+    } finally {
+      submitLock.current = false;
+      setSubmitting(false);
+    }
+  }
+
+  return <main className="booking-page"><div className="booking-page__container">
+    <Link to="/" className="booking-page__back">← На главную</Link>
+    <div className="booking-page__header"><span className="booking-page__eyebrow">GAMESENSE</span><h1 className="booking-page__title">БРОНИРОВАНИЕ</h1></div>
+    {created ? <section className="booking" role="status">
+      <h2>Бронь №{created.id} создана</h2>
+      <p>{displayDateTime(created.startTime)} — {displayDateTime(created.endTime)}</p>
+      <p>{created.tariffName} · {money(created.priceAtBooking)}</p>
+      <Link className="hero__button" to="/profile">Мои бронирования →</Link>
+      <button type="button" className="booking__action" onClick={() => { setCreated(null); setStart(''); }}>Новая бронь</button>
+    </section> : <>
+      {loadError && <div className="booking__message" role="alert">{loadError} <button type="button" onClick={() => setRetry(value => value + 1)}>Повторить загрузку</button></div>}
+      <form className="booking" onSubmit={submit} aria-busy={submitting}>
+        <fieldset className="booking__fieldset" disabled={submitting}>
+          <Step number="01" title="ВЫБЕРИ ЗАЛ">
+            {loadingRooms ? <p role="status">Загружаем залы…</p> : !loadError && !rooms.length ? <p>Залы пока не добавлены. Обратись к администратору клуба.</p> :
+              <div className="booking__zones">{rooms.map(room => <button type="button" key={room.id} aria-pressed={roomId === String(room.id)}
+                className={'booking__zone ' + (roomId === String(room.id) ? 'booking__zone--active' : '')}
+                onClick={() => { setRoomId(String(room.id)); setError(''); }}>
+                <span>{room.name}</span><small>{room.description}</small>
+              </button>)}</div>}
+          </Step>
+          <Step number="02" title="ВЫБЕРИ МЕСТО">
+            {!roomId ? <p>Сначала выбери зал.</p> : loadingPlaces ? <p role="status">Загружаем места и тарифы…</p> :
+              !computers.length ? <p>Места в этом зале пока не добавлены.</p> :
+                <SeatMap computers={computers} selectedSeat={computerId} onSelect={setComputerId} />}
+            <p className="booking__notice">Доступность выбранного времени проверим при отправке брони.</p>
+          </Step>
+          <Step number="03" title="ВЫБЕРИ ТАРИФ">
+            {!tariffs.length ? <p>Выбери зал с доступными тарифами.</p> : <div className="booking__zones">{tariffs.map(item =>
+              <button type="button" key={item.id} aria-pressed={tariffId === String(item.id)}
+                className={'booking__zone ' + (tariffId === String(item.id) ? 'booking__zone--active' : '')}
+                onClick={() => setTariffId(String(item.id))}>
+                <span>{item.name}</span><small>{money(item.price)} / {item.tariffType === 'PACKAGE' ? displayDuration(item.durationMinutes) : 'час'}</small>
+              </button>)}</div>}
+          </Step>
+          <Step number="04" title="ДАТА И ВРЕМЯ">
+            <label className="booking__field">Начало сеанса (московское время)
+              <input type="datetime-local" className="booking__date-picker" value={start} min={clubDateTime()} step="60" required onChange={event => setStart(event.target.value)} />
+            </label>
+            {tariff?.tariffType === 'PACKAGE' ? <p>Длительность пакета: {displayDuration(duration)}</p> :
+              <div className="booking__duration" role="group" aria-label="Длительность сеанса">
+                <label>Часы<input type="number" value={hours} min="0" max="8760" step="1" required onChange={event => setHours(event.target.value)} /></label>
+                <label>Минуты<select value={minutes} onChange={event => setMinutes(event.target.value)}><option value="0">00</option><option value="30">30</option></select></label>
+                <span>{validDuration ? `Итого: ${displayDuration(duration)}` : 'Минимум 30 минут'}</span>
+              </div>}
+            {end && <p>Окончание: {displayDateTime(end)}</p>}
+          </Step>
+          {error && <p className="booking__message" role="alert">{error} <Link to="/profile">Мои бронирования</Link></p>}
+          <div className="booking__summary"><div className="booking__summary-info"><span>Предварительная стоимость</span><strong>{tariff && validDuration ? money(price) : '—'}</strong></div>
+            <button type="submit" className="booking__submit" disabled={!ready || submitting}>{submitting ? 'СОЗДАЁМ БРОНЬ…' : 'ЗАБРОНИРОВАТЬ'}</button>
+          </div>
+        </fieldset>
+      </form>
+    </>}
+  </div></main>;
+}

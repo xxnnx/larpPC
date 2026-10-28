@@ -12,10 +12,10 @@ function SeatMap({ computers, selectedSeat, onSelect }) {
       {/* Легенда цветов */}
       <div className="seat-map-legend">
         <div className="legend-item">
-          <span className="legend-color free"></span> Свободно
+          <span className="legend-color free"></span> Можно выбрать
         </div>
         <div className="legend-item">
-          <span className="legend-color busy"></span> Занято
+          <span className="legend-color busy"></span> Недоступно
         </div>
         <div className="legend-item">
           <span className="legend-color selected"></span> Выбрано
@@ -25,11 +25,14 @@ function SeatMap({ computers, selectedSeat, onSelect }) {
       {/* Сама сетка компьютеров */}
       <div className="seat-map-grid">
         {computers.map((pc) => {
-          const isBusy = pc.status === 'OCCUPIED';
-          const isSelected = selectedSeat === pc.id;
+          const isBusy = pc.status !== 'AVAILABLE';
+          const isSelected = String(selectedSeat) === String(pc.id);
 
           return (
             <button
+              type="button"
+              aria-pressed={isSelected}
+              title={pc.status === 'MAINTENANCE' ? 'На обслуживании' : pc.status === 'DISABLED' ? 'Отключено' : pc.name}
               key={pc.id}
               className={`seat-card ${isBusy ? 'busy' : 'free'} ${isSelected ? 'selected' : ''}`}
               disabled={isBusy}
@@ -39,7 +42,7 @@ function SeatMap({ computers, selectedSeat, onSelect }) {
                
                 <LuMonitor />
               </div>
-              <span className="seat-number">{pc.number}</span>
+              <span className="seat-number">{pc.name || ('Место ' + pc.number)}</span>
             </button>
           );
         })}
