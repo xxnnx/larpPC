@@ -9,9 +9,9 @@ import com.larppc.demo.security.JwtService;
 import com.larppc.demo.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.GetMapping;
 
 
 @RestController
@@ -71,6 +71,7 @@ public class AuthController {
     }
 
     @GetMapping("/me")
+    @PreAuthorize("isAuthenticated()")
     public UserResponse getCurrentUser(@AuthenticationPrincipal User user) {
         return new UserResponse(user);
     }

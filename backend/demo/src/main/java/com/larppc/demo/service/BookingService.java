@@ -202,11 +202,5 @@ public class BookingService {
 
     @Scheduled(fixedDelay = 60_000)
     @Transactional
-    public void autoCompleteBookings() {
-        System.out.println("Автопроверка бронирований: " + LocalDateTime.now());
-
-        int completed = completeExpiredBookings();
-
-        System.out.println("Завершено бронирований: " + completed);
-    }
+    public void autoCompleteBookings() { completeExpiredBookings(); }
 }

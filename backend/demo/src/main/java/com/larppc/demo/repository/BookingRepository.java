@@ -44,4 +44,5 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             @Param("startTime") LocalDateTime startTime,
             @Param("endTime") LocalDateTime endTime
     );
+    boolean existsByComputerIdAndStatus(Long computerId,BookingStatus status);
 }

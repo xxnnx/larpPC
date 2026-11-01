@@ -1,6 +1,9 @@
 package com.larppc.demo.service;
 
+import com.larppc.demo.entity.BookingStatus;
 import com.larppc.demo.entity.Computer;
+import com.larppc.demo.entity.ComputerStatus;
+import com.larppc.demo.repository.BookingRepository;
 import com.larppc.demo.repository.ComputerRepository;
 import com.larppc.demo.repository.RoomRepository;
 import org.springframework.stereotype.Service;
@@ -12,12 +15,14 @@ import java.util.Optional;
 @Service
 public class ComputerService {
 
+    private final BookingRepository bookingRepository;
     private final RoomRepository roomRepository;
     private final ComputerRepository computerRepository;
 
-    public ComputerService(ComputerRepository computerRepository, RoomRepository roomRepository) {
+    public ComputerService(ComputerRepository computerRepository, RoomRepository roomRepository, BookingRepository bookingRepository) {
         this.computerRepository = computerRepository;
         this.roomRepository = roomRepository;
+        this.bookingRepository = bookingRepository;
     }
 
     public List<Computer> getAllComputers() {
@@ -43,6 +48,12 @@ public class ComputerService {
                 .map(computer -> {
                     if (computerRepository.existsByNumber(updatedComputer.getNumber())
                     && !computer.getNumber().equals(updatedComputer.getNumber())) { throw new IllegalArgumentException("Компьютер с таким номером уже существует");}
+                    
+                    if (updatedComputer.getStatus() == ComputerStatus.DISABLED && computer.getStatus() != ComputerStatus.DISABLED) {
+                        boolean hasActiveBookings = bookingRepository.existsByComputerIdAndStatus(id, BookingStatus.ACTIVE);
+                        if (hasActiveBookings) throw new IllegalStateException("Нельзя отключить компьютер: существуют активные бронирования");
+                    }
+
                     computer.setName(updatedComputer.getName());
                     computer.setStatus(updatedComputer.getStatus());
                     computer.setRoom(room);
