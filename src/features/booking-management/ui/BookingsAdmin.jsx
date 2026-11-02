@@ -27,7 +27,7 @@ export default function BookingsAdmin({ active, mutation }) {
           <p>{bookingStatuses[entry.status] || entry.status}</p>
           {entry.status === 'ACTIVE' && (model.cancelId === entry.id
             ? <div className={styles.actions}>
-              <span>Отменить бронь #{entry.id}?</span>
+              <span>Отменить бронь #{entry.id}? Деньги автоматически не возвращаются.</span>
               <Button disabled={busy} onClick={() => model.cancel(entry.id)}>Да, отменить</Button>
               <Button disabled={busy} onClick={() => model.setCancelId(null)}>Назад</Button>
             </div>

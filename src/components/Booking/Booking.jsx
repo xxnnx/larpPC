@@ -4,6 +4,7 @@ import SeatMap from '../SeatMap/SeatMap';
 import { getZones, getResources, getTariffs, createBooking, apiError } from '../../api/bookingApi';
 import { clubDateTime, bookingDate, endDateTime, displayDateTime, displayDuration, matchRoom, money } from '../../utils/booking';
 import './Booking.css';
+import { useWallet } from '@/entities/wallet/useWallet';
 
 function Step({ number, title, children }) {
   return <section className="booking__step">
@@ -13,6 +14,7 @@ function Step({ number, title, children }) {
 }
 
 export default function Booking() {
+  const wallet = useWallet();
   const [params] = useSearchParams();
   const hint = params.get('room') || params.get('zone');
   const tariffHint = params.get('tariff');
@@ -78,6 +80,8 @@ export default function Booking() {
     && (tariff?.tariffType === 'PACKAGE' || (duration >= 30 && duration % 30 === 0));
   const end = start && validDuration && Number.isFinite(bookingDate(start).getTime()) ? endDateTime(start, duration) : '';
   const price = tariff ? Number(tariff.price) * (tariff.tariffType === 'PACKAGE' ? 1 : duration / 60) : 0;
+  const roundedPrice = Math.round((price + Number.EPSILON) * 100) / 100;
+  const enoughFunds = wallet.balance !== null && wallet.balance >= roundedPrice;
   const ready = computer?.status === 'AVAILABLE' && tariff && validTime && validDuration && !loadingPlaces && !loadError;
 
   async function submit(event) {
@@ -85,6 +89,7 @@ export default function Booking() {
     if (submitLock.current) return;
     setError('');
     if (!ready) { setError('Выбери место, тариф и время в будущем.'); return; }
+    if (wallet.loading || wallet.error || !enoughFunds) { setError('Проверь баланс и пополни его у администратора клуба.'); return; }
     submitLock.current = true;
     setSubmitting(true);
     try {
@@ -93,7 +98,9 @@ export default function Booking() {
         startTime: start + ':00', endTime: end,
       });
       setCreated(booking);
+      wallet.refresh();
     } catch (err) {
+      wallet.refresh();
       setError(!err.response && err.request
         ? 'Ответ сервера не получен. Бронь могла сохраниться: проверь личный кабинет перед повторной отправкой.'
         : apiError(err, 'Не удалось создать бронирование.'));
@@ -109,7 +116,8 @@ export default function Booking() {
     {created ? <section className="booking" role="status">
       <h2>Бронь №{created.id} создана</h2>
       <p>{displayDateTime(created.startTime)} — {displayDateTime(created.endTime)}</p>
-      <p>{created.tariffName} · {money(created.priceAtBooking)}</p>
+      <p>{created.tariffName} · Списано с баланса: {money(created.priceAtBooking)}</p>
+      {wallet.loading ? <p>Обновляем баланс…</p> : wallet.error ? <p role="alert">{wallet.error} <button type="button" onClick={wallet.refresh}>Обновить баланс</button></p> : <p>Текущий баланс: {money(wallet.balance)}</p>}
       <Link className="hero__button" to="/profile">Мои бронирования →</Link>
       <button type="button" className="booking__action" onClick={() => { setCreated(null); setStart(''); }}>Новая бронь</button>
     </section> : <>
@@ -150,9 +158,17 @@ export default function Booking() {
               </div>}
             {end && <p>Окончание: {displayDateTime(end)}</p>}
           </Step>
+          <Step number="05" title="ОПЛАТА С БАЛАНСА">
+            {wallet.loading ? <p role="status">Загружаем баланс…</p> : wallet.error ? <p role="alert">{wallet.error}</p> : <>
+              <p>На балансе: <strong>{money(wallet.balance)}</strong></p>
+              {tariff && validDuration && (enoughFunds ? <p>После оплаты останется примерно {money(wallet.balance - roundedPrice)}.</p> : <p role="status">Не хватает {money(roundedPrice - wallet.balance)}. Пополни баланс у администратора клуба.</p>)}
+            </>}
+            <button type="button" className="booking__action" disabled={wallet.loading} onClick={wallet.refresh}>Обновить баланс</button>
+            <p className="booking__notice">Стоимость спишется при создании брони. При отмене автоматического возврата нет.</p>
+          </Step>
           {error && <p className="booking__message" role="alert">{error} <Link to="/profile">Мои бронирования</Link></p>}
           <div className="booking__summary"><div className="booking__summary-info"><span>Предварительная стоимость</span><strong>{tariff && validDuration ? money(price) : '—'}</strong></div>
-            <button type="submit" className="booking__submit" disabled={!ready || submitting}>{submitting ? 'СОЗДАЁМ БРОНЬ…' : 'ЗАБРОНИРОВАТЬ'}</button>
+            <button type="submit" className="booking__submit" disabled={!ready || submitting || wallet.loading || !!wallet.error || !enoughFunds}>{submitting ? 'ОПЛАЧИВАЕМ…' : 'ОПЛАТИТЬ И ЗАБРОНИРОВАТЬ'}</button>
           </div>
         </fieldset>
       </form>

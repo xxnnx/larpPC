@@ -619,7 +619,7 @@
 }
 
 
-/* Убираем уродливые стрелки number input */
+
 
 .booking__duration input::-webkit-inner-spin-button,
 .booking__duration input::-webkit-outer-spin-button {
@@ -627,9 +627,7 @@
 }
 
 
-/* =========================================
-   SUMMARY
-========================================= */
+
 
 .booking__summary {
   display: flex;
@@ -664,9 +662,6 @@
 }
 
 
-/* =========================================
-   SUBMIT
-========================================= */
 
 .booking__submit {
   display: flex;
@@ -674,7 +669,9 @@
   justify-content: center;
   gap: 25px;
 
-  min-width: 280px;
+  min-width: min(280px, 100%);
+  max-width: 100%;
+  white-space: normal;
   height: 58px;
 
   padding: 0 28px;
@@ -719,9 +716,7 @@
 }
 
 
-/* =========================================
-   DATEPICKER
-========================================= */
+
 
 .react-datepicker {
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
@@ -767,9 +762,7 @@
 }
 
 
-/* =========================================
-   RESPONSIVE
-========================================= */
+
 
 @media (max-width: 900px) {
   .booking-page {

@@ -9,7 +9,7 @@
 .hero__headline { margin: 24px 0 20px; font-size: clamp(34px, 4vw, 52px); font-weight: 650; line-height: 1.08; letter-spacing: -1.7px; }
 .hero__description { max-width: 440px; margin: 0; color: #bdb5c7; font-size: 15px; line-height: 1.75; }
 .hero__actions { display: flex; align-items: center; flex-wrap: wrap; gap: 28px; margin-top: 32px; }
-.hero__button { display: inline-flex; align-items: center; justify-content: space-between; gap: 26px; min-height: 54px; padding: 0 24px; background: var(--accent); color: #fff; border-radius: 6px; font-size: 14px; font-weight: 700; text-decoration: none; box-shadow: 0 8px 36px #d100ff26; transition: background .2s, transform .2s; }
+.hero__button { display: inline-flex; align-items: center; justify-content: space-between; gap: 26px; min-height: 54px; padding: 0 24px; background: var(--accent); color: #fff; border-radius: var(--button-radius); font-size: 14px; font-weight: 700; text-decoration: none; box-shadow: 0 8px 36px #d100ff26; transition: background .2s, transform .2s; }
 .hero__button:hover { background: #ae00d6; transform: translateY(-2px); }
 .hero__secondary { display: inline-flex; gap: 18px; align-items: center; min-height: 44px; font-size: 14px; color: #fff; text-decoration: none; }
 .hero__secondary:hover { color: var(--accent-light); }

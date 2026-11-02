@@ -54,7 +54,7 @@
   padding: 10px;
   background-color: #2e2e2e;
   border: 2px solid transparent;
-  border-radius: 8px;
+  border-radius: var(--button-radius);
   color: white;
   cursor: pointer;
   transition: all 0.2s ease-in-out;

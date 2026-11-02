@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { getMyBookings, getZones, getResources, cancelBooking, apiError } from '../../api/bookingApi';
 import { displayDateTime, money } from '../../utils/booking';
 import './Profile.css';
+import WalletPanel from '@/features/wallet/WalletPanel';
 
 const statuses = { ACTIVE: 'Активно', CANCELLED: 'Отменено', COMPLETED: 'Завершено' };
 
@@ -18,6 +19,13 @@ export default function Profile() {
   const [cancelling, setCancelling] = useState(null);
   const [confirmId, setConfirmId] = useState(null);
   const cancelLock = useRef(false);
+
+  useEffect(() => {
+    const update = () => { if (document.visibilityState === 'visible' && !cancelLock.current) setRefresh(value => value + 1); };
+    window.addEventListener('focus', update);
+    document.addEventListener('visibilitychange', update);
+    return () => { window.removeEventListener('focus', update); document.removeEventListener('visibilitychange', update); };
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -75,7 +83,7 @@ export default function Profile() {
         <span className="booking-card__status">{statuses[booking.status] || booking.status}</span>
         <strong>{money(booking.priceAtBooking)}</strong>
         {booking.status === 'ACTIVE' && (confirmId === booking.id ? <div className="profile-confirm">
-          <p>Отменить эту бронь?</p>
+          <p>Отменить эту бронь? Автоматического возврата денег нет. По вопросу возврата обратись к администратору клуба.</p>
           <button type="button" disabled={cancelling !== null} onClick={() => cancel(booking.id)}>{cancelling === booking.id ? 'Отменяем…' : 'Да, отменить'}</button>
           <button type="button" disabled={cancelling !== null} onClick={() => setConfirmId(null)}>Оставить</button>
         </div> : <button className="booking-card__cancel" type="button" disabled={cancelling !== null || loading} onClick={() => setConfirmId(booking.id)}>ОТМЕНИТЬ</button>)}
@@ -96,6 +104,7 @@ export default function Profile() {
       <h1 className="profile-page__title">ПРИВЕТ, {user.name?.toUpperCase()}</h1><p>Твои бронирования и история посещений.</p></div>
       <Link to="/booking" className="profile-page__book">НОВАЯ БРОНЬ +</Link>
     </section>
+    <WalletPanel />
     <button type="button" className="profile-refresh" disabled={loading || cancelling !== null} onClick={() => setRefresh(value => value + 1)}>Обновить бронирования</button>
     {loading && <p role="status">Загружаем бронирования…</p>}
     {error && <p className="auth-feedback auth-feedback--error" role="alert">{error}</p>}

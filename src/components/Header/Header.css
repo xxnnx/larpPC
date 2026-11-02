@@ -5,7 +5,7 @@
 .header__link { padding: 12px 0; color: #d1cbd8; font-size: 14px; text-decoration: none; transition: color .2s; }
 .header__link:hover { color: var(--accent-light); }
 .header__account { display: flex; align-items: center; gap: 12px; }
-.header__login, .header__logout { display: inline-flex; align-items: center; justify-content: center; gap: 18px; min-height: 44px; padding: 0 18px; border: 1px solid #ffffff40; border-radius: 6px; background: #ffffff05; color: white; text-decoration: none; font-size: 14px; cursor: pointer; }
+.header__login, .header__logout { display: inline-flex; align-items: center; justify-content: center; gap: 18px; min-height: 44px; padding: 0 18px; border: 1px solid #ffffff40; border-radius: var(--button-radius); background: #ffffff05; color: white; text-decoration: none; font-size: 14px; cursor: pointer; }
 .header__login:hover, .header__logout:hover { border-color: var(--accent-light); background: #d100ff15; }
 .header__user { display: flex; align-items: center; gap: 8px; color: white; text-decoration: none; }
 .header__user-avatar { display: grid; place-items: center; width: 36px; height: 36px; background: #d100ff25; border: 1px solid var(--accent); border-radius: 50%; }
@@ -13,7 +13,7 @@
 .header__menu-toggle { display: none; }
 @media (max-width: 1050px) {
  .header { width: calc(100% - 40px); height: 80px; }
- .header__menu-toggle { display: grid; place-items: center; width: 44px; height: 44px; color: white; border: 1px solid #ffffff40; background: #16131c; border-radius: 6px; font-size: 22px; cursor: pointer; }
+ .header__menu-toggle { display: grid; place-items: center; width: 44px; height: 44px; color: white; border: 1px solid #ffffff40; background: #16131c; border-radius: var(--button-radius); font-size: 22px; cursor: pointer; }
  .header__navigation { display: none; position: absolute; top: 79px; left: 0; right: 0; padding: 16px 24px; background: #16131c; border: 1px solid #ffffff24; border-radius: 0 0 10px 10px; box-shadow: 0 20px 50px #0008; }
  .header__navigation--open { display: flex; flex-direction: column; gap: 0; }
  .header__link { padding: 14px 0; }

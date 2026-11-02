@@ -1,0 +1,9 @@
+.wallet-panel { margin: 0 0 40px; padding: 24px; background: #151515; border: 1px solid #705080; }
+.wallet-panel__balance, .wallet-operation { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+.wallet-panel__balance strong { font-size: clamp(28px, 5vw, 40px); }
+.wallet-panel h2, .wallet-panel h3, .wallet-panel h4 { margin: 0 0 12px; }
+.wallet-panel h3 { margin-top: 28px; }
+.wallet-panel p { color: #c2b9c7; line-height: 1.5; margin: 6px 0; overflow-wrap: anywhere; }
+.wallet-operation { padding: 18px 0; border-top: 1px solid #3d3342; }
+.wallet-operation > div { min-width: 0; }
+@media (max-width: 600px) { .wallet-panel { padding: 18px; } .wallet-panel__balance, .wallet-operation { flex-direction: column; align-items: flex-start; gap: 12px; } }

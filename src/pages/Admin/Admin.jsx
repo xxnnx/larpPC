@@ -8,8 +8,10 @@ import { useMutation } from '@/shared/hooks';
 import { Button } from '@/shared/ui/Button';
 import { Feedback } from '@/shared/ui/Feedback';
 import styles from './Admin.module.css';
+import WalletAdmin from '@/features/wallet/WalletAdmin';
 
 const sections = [
+  { id: 'wallet', label: 'Пополнение баланса', Component: WalletAdmin },
   { id: 'bookings', label: 'Бронирования', Component: BookingsAdmin },
   { id: 'computers', label: 'Компьютеры', Component: ComputersAdmin },
   { id: 'tariffs', label: 'Тарифы', Component: TariffsAdmin },

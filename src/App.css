@@ -40,7 +40,8 @@
 .footer__tagline, .footer__contact-label, .footer__navigation-link, .footer__copyright, .footer__bottom-text { color: var(--muted); }
 .booking-page, .auth-page, .register-page, .profile-page { background-color: var(--background); }
 .booking { border-radius: 12px; border-color: var(--border); background: #16131ce6; }
-.booking__zone, .booking__time, .booking__date-picker, .booking__submit { border-radius: 6px; }
+.booking__date-picker { border-radius: 6px; }
+.booking__zone, .booking__time, .booking__submit { border-radius: var(--button-radius); }
 .booking__message { margin: 20px 0; padding: 16px 20px; border: 1px solid; border-radius: 8px; line-height: 1.6; }
 .booking__message--error { color: #ffbdcc; border-color: #ff789a60; background: #431c2a; }
 .booking__message--success { color: #b5f4ca; border-color: #83dca660; background: #173526; }

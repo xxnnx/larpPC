@@ -1,5 +1,17 @@
 :root { --background: #0c0b10; --surface: #16131c; --accent: #d100ff; --accent-light: #e580ff; --muted: #b3aabd; --border: #ffffff1f; --container: min(1200px, calc(100% - 80px)); color-scheme: dark; }
 * { box-sizing: border-box; }
+:root { --button-radius: 14px; }
+button,
+input[type='button'],
+input[type='submit'],
+.hero__button,
+.header__login,
+.zone-details__booking,
+.zone-details__main-button,
+.zone-details__back-button,
+.profile-page__book {
+  border-radius: var(--button-radius);
+}
 html { scroll-behavior: smooth; scroll-padding-top: 24px; }
 body { margin: 0; background: var(--background); color: #f7f4fa; font-family: 'Segoe UI', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
 button, input, textarea, select { font: inherit; }
