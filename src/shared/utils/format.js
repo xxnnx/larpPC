@@ -22,13 +22,28 @@ export function clubDateTime(date = new Date()) {
 
 
 
-// Backend uses LocalDateTime. Interpret it as the club's time, never browser UTC.
+
 export function bookingDate(value) {
-  return new Date(value && /(?:Z|[+-]\d{2}:\d{2})$/.test(value) ? value : value + '+03:00');
+  return new Date(
+    value && /(?:Z|[+-]\d{2}:\d{2})$/.test(value)
+      ? value
+      : value + '+03:00'
+  );
 }
+
+
 export function endDateTime(start, minutes) {
-  return clubDateTime(new Date(bookingDate(start).getTime() + minutes * 60000)) + ':00';
+  return clubDateTime(
+    new Date(
+      bookingDate(start).getTime() + minutes * 60000
+    )
+  ) + ':00';
 }
+
 export function displayDateTime(value) {
-  return new Intl.DateTimeFormat('ru-RU', { timeZone: 'Europe/Moscow', dateStyle: 'short', timeStyle: 'short' }).format(bookingDate(value));
+  return new Intl.DateTimeFormat('ru-RU', {
+    timeZone: 'Europe/Moscow',
+    dateStyle: 'short',
+    timeStyle: 'short'
+  }).format(bookingDate(value));
 }

@@ -10,7 +10,10 @@ import {
   LuKeyboard,
 } from 'react-icons/lu';
 
-import zones from '../../data/zones';
+import localZones from '../../data/zones';
+import { getRooms, matchRoom } from '@/entities/room';
+import { useState, useEffect } from 'react';
+import { apiError } from '@/shared/api';
 import './ZoneDetails.css';
 import LiveTariffs from '../../components/Prices/LiveTariffs';
 import '../../components/Prices/Prices.css';
@@ -18,9 +21,61 @@ import '../../components/Prices/Prices.css';
 function ZoneDetails() {
   const { id } = useParams();
 
-  const zone = zones.find(
-    (item) => item.id === id
-  );
+  const [rooms, setRooms] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    getRooms(controller.signal)
+      .then(data => {
+        setRooms(data);
+      })
+      .catch(err => {
+        if (!controller.signal.aborted) {
+          setError(apiError(err));
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      });
+
+    return () => controller.abort();
+  }, []);
+
+  const zone = localZones
+    .map(localZone => {
+      const room = matchRoom(rooms, localZone.id);
+
+      if (!room) return null;
+
+      return {
+        ...localZone,
+        id: room.id,
+        name: room.name,
+        description: room.description,
+      };
+    })
+    .find(item => item && String(item.id) === id);
+
+     if (loading) {
+    return (
+      <main className="zone-details">
+        <p>Загружаем информацию о зоне...</p>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="zone-details">
+        <p>{error}</p>
+      </main>
+    );
+  }
 
   if (!zone) {
     return (

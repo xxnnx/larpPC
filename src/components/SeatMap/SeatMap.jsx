@@ -1,5 +1,5 @@
 import './SeatMap.css';
-import { LuMonitor } from 'react-icons/lu'; // Если используешь lucide-react, или оставь просто текст/эмодзи
+import { LuMonitor } from 'react-icons/lu'; 
 
 function SeatMap({ computers, selectedSeat, onSelect }) {
   // computers - массив компов с бэка
@@ -9,7 +9,7 @@ function SeatMap({ computers, selectedSeat, onSelect }) {
   return (
     <div className="seat-map-container">
       
-      {/* Легенда цветов */}
+      
       <div className="seat-map-legend">
         <div className="legend-item">
           <span className="legend-color free"></span> Можно выбрать
@@ -22,7 +22,7 @@ function SeatMap({ computers, selectedSeat, onSelect }) {
         </div>
       </div>
 
-      {/* Сама сетка компьютеров */}
+      
       <div className="seat-map-grid">
         {computers.map((pc) => {
           const isBusy = pc.status !== 'AVAILABLE';
