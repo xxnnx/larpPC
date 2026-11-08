@@ -1,14 +1,18 @@
 package com.larppc.demo.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.larppc.demo.dto.ComputerRequest;
+import com.larppc.demo.dto.ComputerResponse;
 import com.larppc.demo.entity.Computer;
 import com.larppc.demo.service.ComputerService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,22 +59,27 @@ public class ComputerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Computer> updateComputer(
-            @PathVariable Long id,
-            @RequestBody ComputerRequest request) {
-
+    public ResponseEntity<Computer> updateComputer(@PathVariable Long id, @RequestBody ComputerRequest request) {
         Computer computer = new Computer();
 
         computer.setNumber(request.getNumber());
         computer.setName(request.getName());
         computer.setStatus(request.getStatus());
 
-        return computerService.updateComputer(id, computer, request.getRoomId())
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return computerService.updateComputer(id, computer, request.getRoomId()).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
-    
-    
-    
-    
+
+    @GetMapping("/available")
+    public List<ComputerResponse> getAvailableComputers(
+            @RequestParam Long roomId,
+            @RequestParam Long tariffId,
+            @RequestParam
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            LocalDateTime startTime,
+            @RequestParam
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+            LocalDateTime endTime
+    ) {
+        return computerService.getAvailableComputers(roomId,tariffId,startTime,endTime).stream().map(ComputerResponse::new).toList();
+    }
 }
