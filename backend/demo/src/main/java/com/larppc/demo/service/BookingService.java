@@ -24,17 +24,20 @@ public class BookingService {
     private final ComputerRepository computerRepository;
     private final UserRepository userRepository;
     private final TariffRepository tariffRepository;
+    private final WalletService walletService;
 
     public BookingService(
             BookingRepository bookingRepository,
             ComputerRepository computerRepository,
             UserRepository userRepository,
-            TariffRepository tariffRepository
+            TariffRepository tariffRepository,
+            WalletService walletService
     ) {
         this.bookingRepository = bookingRepository;
         this.computerRepository = computerRepository;
         this.userRepository = userRepository;
         this.tariffRepository = tariffRepository;
+        this.walletService = walletService;
     }
 
     @Transactional
@@ -63,7 +66,7 @@ public class BookingService {
             );
         }
 
-        User user = userRepository.findById(userId)
+        User user = userRepository.findByIdForUpdate(userId)
                 .orElseThrow(() ->
                         new IllegalArgumentException("Пользователь не найден"));
 
@@ -153,7 +156,10 @@ public class BookingService {
         booking.setStatus(BookingStatus.ACTIVE);
         booking.setCreatedAt(LocalDateTime.now());
 
-        return bookingRepository.save(booking);
+        Booking savedBooking = bookingRepository.save(booking);
+        walletService.debitForBooking(user, savedBooking, priceAtBooking);
+
+        return savedBooking;
     }
 
     @Transactional(readOnly = true)
@@ -175,6 +181,7 @@ public class BookingService {
 
         if (booking.getStatus() != BookingStatus.ACTIVE) { throw new IllegalStateException("Можно отменять только активные бронирования");}
 
+        walletService.refundForBooking(booking);
         booking.setStatus(BookingStatus.CANCELLED);
         bookingRepository.save(booking);
     }
@@ -184,7 +191,8 @@ public class BookingService {
         Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new IllegalArgumentException("Бронирование не найдено"));
 
         if (booking.getStatus() != BookingStatus.ACTIVE) { throw new IllegalStateException("Можно отменить только активное бронирование");}
-
+        
+        walletService.refundForBooking(booking);
         booking.setStatus(BookingStatus.CANCELLED);
     }
 
@@ -202,11 +210,5 @@ public class BookingService {
 
     @Scheduled(fixedDelay = 60_000)
     @Transactional
-    public void autoCompleteBookings() {
-        System.out.println("Автопроверка бронирований: " + LocalDateTime.now());
-
-        int completed = completeExpiredBookings();
-
-        System.out.println("Завершено бронирований: " + completed);
-    }
+    public void autoCompleteBookings() { completeExpiredBookings(); }
 }

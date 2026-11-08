@@ -7,6 +7,7 @@ public class ComputerRequest {
     private Integer number;
     private String name;
     private ComputerStatus status;
+    private Long roomId;
 
     public ComputerRequest() {
     }
@@ -33,5 +34,13 @@ public class ComputerRequest {
 
     public void setStatus(ComputerStatus status) {
         this.status = status;
+    }
+
+    public Long getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(Long roomId) {
+        this.roomId = roomId;
     }
 }

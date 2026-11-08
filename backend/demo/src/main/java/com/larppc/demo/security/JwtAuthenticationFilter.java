@@ -56,7 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
                     }
                 }
 
-            } catch (Exception ignored) { } //jwt если запрос неверный то остается неавторизированным
+            } catch (Exception exception) { SecurityContextHolder.clearContext(); } //jwt если запрос неверный то остается неавторизированным
             filterChain.doFilter(request, response);
         } 
 }
