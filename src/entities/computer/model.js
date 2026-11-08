@@ -11,3 +11,28 @@ export async function getComputersInRooms(rooms, signal) {
 export const saveComputer = (id, details) => id
   ? api.put(`/computers/${encodeURIComponent(id)}`, details)
   : api.post('/computers', details);
+
+
+
+export const getAvailableComputers = async (
+  roomId,
+  tariffId,
+  start,
+  end,
+  signal
+) => {
+  const formatDateTime = (value) =>
+    value.length === 16 ? `${value}:00` : value;
+
+  const response = await api.get('/computers/available', {
+    params: {
+      roomId,
+      tariffId,
+      startTime: formatDateTime(start),
+      endTime: formatDateTime(end),
+    },
+    signal,
+  });
+
+  return response.data;
+};

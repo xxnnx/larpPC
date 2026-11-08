@@ -10,21 +10,35 @@ const statuses = { ACTIVE: 'Активно', CANCELLED: 'Отменено', COMP
 
 export default function Profile() {
   const { user, logout } = useAuth();
+
   const [bookings, setBookings] = useState([]);
   const [places, setPlaces] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [notice, setNotice] = useState('');
+  const [notice, setNotice] = useState(''); //уведомление об успехе
   const [refresh, setRefresh] = useState(0);
   const [cancelling, setCancelling] = useState(null);
   const [confirmId, setConfirmId] = useState(null);
+
   const cancelLock = useRef(false);
 
   useEffect(() => {
-    const update = () => { if (document.visibilityState === 'visible' && !cancelLock.current) setRefresh(value => value + 1); };
-    window.addEventListener('focus', update);
-    document.addEventListener('visibilitychange', update);
-    return () => { window.removeEventListener('focus', update); document.removeEventListener('visibilitychange', update); };
+  const update = () => {
+    if (
+      document.visibilityState === 'visible' &&
+      !cancelLock.current
+    ) {
+      setRefresh(value => value + 1);
+    }
+  };
+
+  window.addEventListener('focus', update);
+  document.addEventListener('visibilitychange', update);
+
+  return () => {
+    window.removeEventListener('focus', update);
+    document.removeEventListener('visibilitychange', update);
+  };
   }, []);
 
   useEffect(() => {
@@ -69,7 +83,7 @@ export default function Profile() {
 
   function card(booking) {
     const place = places[booking.computerId];
-    return <article className="booking-card" key={booking.id}>
+    return <article className="booking-card" key={booking.id}>  
       <div className="booking-card__main">
         <div className="booking-card__number">#{booking.id}</div>
         <div className="booking-card__info">
