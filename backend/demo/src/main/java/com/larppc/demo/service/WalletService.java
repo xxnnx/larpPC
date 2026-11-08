@@ -98,4 +98,30 @@ public class WalletService {
                         transaction.getBooking() != null ? transaction.getBooking().getId() : null
                 )).toList();
     }
+
+    @Transactional
+    public void refundForBooking(Booking booking){
+        WalletTransaction payment = transactionRepository.findByBooking_IdAndType(booking.getId(), WalletTransactionType.BOOKING_PAYMENT)
+        .orElseThrow(() -> new IllegalStateException("Не найдена операция оплаты этого бронирования"));
+
+        boolean alreadyRefunded = transactionRepository.existsByBooking_IdAndType(booking.getId(), WalletTransactionType.REFUND);
+        if (alreadyRefunded) {throw new IllegalStateException("Возврат за это бронирование уже выполенен");}
+
+        User user = userRepository.findByIdForUpdate(booking.getUser().getId()).orElseThrow(() -> new IllegalArgumentException("Пользователь не найден"));
+        BigDecimal amount = payment.getAmount();
+        BigDecimal balanceBefore = user.getBalance();
+        BigDecimal balanceAfter = balanceBefore.add(amount);
+        user.setBalance(balanceAfter);
+
+        WalletTransaction refund = new WalletTransaction();
+        refund.setUser(user);
+        refund.setBooking(booking);
+        refund.setType(WalletTransactionType.REFUND);
+        refund.setAmount(amount);
+        refund.setBalanceBefore(balanceBefore);
+        refund.setBalanceAfter(balanceAfter);
+        refund.setDescription("Возврат средств за бронирование №" + booking.getId());
+
+        transactionRepository.save(refund);
+    }
 }

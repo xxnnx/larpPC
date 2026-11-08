@@ -181,6 +181,7 @@ public class BookingService {
 
         if (booking.getStatus() != BookingStatus.ACTIVE) { throw new IllegalStateException("Можно отменять только активные бронирования");}
 
+        walletService.refundForBooking(booking);
         booking.setStatus(BookingStatus.CANCELLED);
         bookingRepository.save(booking);
     }
@@ -190,7 +191,8 @@ public class BookingService {
         Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new IllegalArgumentException("Бронирование не найдено"));
 
         if (booking.getStatus() != BookingStatus.ACTIVE) { throw new IllegalStateException("Можно отменить только активное бронирование");}
-
+        
+        walletService.refundForBooking(booking);
         booking.setStatus(BookingStatus.CANCELLED);
     }
 
