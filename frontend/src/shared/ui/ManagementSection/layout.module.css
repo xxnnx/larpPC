@@ -1,0 +1,199 @@
+
+.fieldset {
+  min-width: 0;
+  margin: 0 0 24px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.fieldset legend {
+  padding: 0 8px;
+  font-weight: 600;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.filter {
+  max-width: 260px;
+  margin-bottom: 20px;
+}
+
+
+.filters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 20px 0 28px;
+}
+
+/* Кнопки фильтрации */
+.filterButton {
+  width: 100%;
+  min-width: 0;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+/* Активная кнопка */
+.selected {
+  background: #622076;
+  color: #ffffff;
+  
+}
+
+.selected:hover {
+  
+ background: #622076;
+    border-color: var(--accent-light);
+}
+
+.list {
+  border-top: 1px solid var(--border);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.row > div {
+  min-width: 0;
+}
+
+.row p {
+  margin: 6px 0;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.bookingInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  text-align: right;
+}
+
+.bookingInfo strong {
+  font-size: 18px;
+}
+
+.bookingInfo p {
+  margin: 0;
+}
+
+.cancelButton {
+  background: transparent;
+  color: #dc6262;
+  border: 1px solid #dc6262;
+  padding: 9px 16px;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+.cancelButton:hover {
+  background: rgba(220, 98, 98, 0.12);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 24px 0 12px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.pageInfo {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.pageButtons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.currentPage {
+  background: #7c3aed;
+  color: white;
+  border-color: #7c3aed;
+}
+
+@media (max-width: 600px) {
+
+    .pagination {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .pageButtons {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+     .bookingInfo {
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+  }
+
+  .actions {
+    justify-content: flex-start;
+  } 
+  .row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .fieldset {
+    padding: 16px;
+  }
+
+  .fields {
+    grid-template-columns: 1fr;
+  }
+
+  .filters {
+    gap: 6px;
+    margin: 16px 0 24px;
+  }
+
+  .filterButton {
+    padding: 10px 6px;
+    font-size: 13px;
+  }
+}
