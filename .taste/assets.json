@@ -1,0 +1,331 @@
+{
+  "version": 1,
+  "assets": [
+    {
+      "id": "hero_club_photo",
+      "kind": "image",
+      "status": "existing",
+      "purpose": "Фон первого экрана по композиции Nubo.",
+      "requirements": [
+        "Проверен JPEG 2560×1709, 2225352 байта.",
+        "Desktop object-position:50% 50%; mobile:45% 50%. Сохранить центральный монитор.",
+        "Исходник не изменять; затемнение выполнять средствами CSS.",
+        "Происхождение подтверждено до существующего файла проекта; автор и отдельная лицензия не документированы."
+      ],
+      "role": "photography",
+      "sectionIds": [
+        "home"
+      ],
+      "aspectRatio": "2560:1709",
+      "composition": "Фронтальный ряд игровых компьютеров, красная подсветка сверху, мониторы и кресла ниже. Desktop: текст по центру; mobile: заголовок над предметной областью, действия внизу. Единственная фотография заполняет секцию.",
+      "source": {
+        "kind": "project",
+        "reference": "src/assets/standard.jpg"
+      },
+      "destination": "src/assets/standard.jpg"
+    },
+    {
+      "id": "zone_standard_photo",
+      "kind": "image",
+      "status": "existing",
+      "purpose": "Карточка зоны «Стандарт».",
+      "requirements": [
+        "Проверен JPEG 2560×1709, 2225352 байта.",
+        "Рамка 77:100 desktop, 33:50 mobile; object-position:45% 50%.",
+        "Автор и отдельная лицензия исходного проектного материала не документированы."
+      ],
+      "role": "photography",
+      "sectionIds": [
+        "zones"
+      ],
+      "aspectRatio": "2560:1709",
+      "composition": "Центральное игровое место: системный блок сверху, монитор посередине, кресло снизу. Нижняя четверть с локальным затемнением под название, описание и ссылку; компактная метка сверху.",
+      "source": {
+        "kind": "project",
+        "reference": "src/assets/standard.jpg"
+      },
+      "destination": "src/assets/standard.jpg"
+    },
+    {
+      "id": "zone_standard_plus_photo",
+      "kind": "image",
+      "status": "existing",
+      "purpose": "Карточка зоны «Стандарт+».",
+      "requirements": [
+        "Проверен JPEG 2560×1709, 1838811 байт.",
+        "Рамка 77:100 desktop, 33:50 mobile; object-position:70% 50%.",
+        "Автор и отдельная лицензия исходного проектного материала не документированы."
+      ],
+      "role": "photography",
+      "sectionIds": [
+        "zones"
+      ],
+      "aspectRatio": "2560:1709",
+      "composition": "Два игровых места справа, крупный монитор, клавиатура и кресло. Кроп исключает большую часть коридора слева. Нижняя затемнённая четверть под текст, оборудование остаётся различимым.",
+      "source": {
+        "kind": "project",
+        "reference": "src/assets/standard-plus.jpg"
+      },
+      "destination": "src/assets/standard-plus.jpg"
+    },
+    {
+      "id": "zone_console_photo",
+      "kind": "image",
+      "status": "existing",
+      "purpose": "Карточка зоны PlayStation.",
+      "requirements": [
+        "Проверен JPEG 2560×1709, 1443188 байт.",
+        "Рамка 77:100 desktop, 33:50 mobile; object-position:40% 50%.",
+        "Не приписывать изображённому человеку роль сотрудника или автора отзыва.",
+        "Автор и отдельная лицензия исходного проектного материала не документированы."
+      ],
+      "role": "photography",
+      "sectionIds": [
+        "zones"
+      ],
+      "aspectRatio": "2560:1709",
+      "composition": "Экран слева от центра, игрок спиной в центре, диван внизу. Сохранить экран и фигуру при вертикальном кропе. Метка на свободной верхней стене, подпись над затемнённой нижней областью.",
+      "source": {
+        "kind": "project",
+        "reference": "src/assets/console.jpg"
+      },
+      "destination": "src/assets/console.jpg"
+    },
+    {
+      "id": "club_gallery_photo_1",
+      "kind": "image",
+      "status": "existing",
+      "purpose": "Первый кадр галереи.",
+      "requirements": [
+        "Проверен JPEG 2560×1709, 2035838 байт.",
+        "Рамка 21:25 desktop, 1:1 mobile; object-position:50% 50%.",
+        "Ступенчатые углы выполнять CSS-маской, исходник сохранять.",
+        "Автор и отдельная лицензия исходного проектного материала не документированы."
+      ],
+      "role": "photography",
+      "sectionIds": [
+        "gallery"
+      ],
+      "aspectRatio": "2560:1709",
+      "composition": "Ряд мониторов уходит в глубину, ближайшее место слева от центра, проход справа. Единственное видимое фото в рамке Meridian; текст и управление находятся вне изображения.",
+      "source": {
+        "kind": "project",
+        "reference": "src/assets/gallery-1.jpg"
+      },
+      "destination": "src/assets/gallery-1.jpg"
+    },
+    {
+      "id": "club_gallery_photo_2",
+      "kind": "image",
+      "status": "existing",
+      "purpose": "Вторая запись галереи.",
+      "requirements": [
+        "Проверен JPEG 2560×1709, 2225352 байта.",
+        "Совпадает по SHA-256 с standard.jpg и gallery-4.jpg.",
+        "Рамка 21:25 desktop, 1:1 mobile; object-position:45% 50%.",
+        "Автор и отдельная лицензия исходного проектного материала не документированы."
+      ],
+      "role": "photography",
+      "sectionIds": [
+        "gallery"
+      ],
+      "aspectRatio": "2560:1709",
+      "composition": "Фронтальный ряд компьютеров и кресел. Центральные мониторы сохраняются в вертикальном и квадратном кропах; подпись и кнопки вне фотографии.",
+      "source": {
+        "kind": "project",
+        "reference": "src/assets/gallery-2.jpg"
+      },
+      "destination": "src/assets/gallery-2.jpg"
+    },
+    {
+      "id": "club_gallery_photo_3",
+      "kind": "image",
+      "status": "existing",
+      "purpose": "Третья запись галереи.",
+      "requirements": [
+        "Проверен JPEG 2560×1709, 1838811 байт.",
+        "Совпадает по SHA-256 с standard-plus.jpg.",
+        "Рамка 21:25 desktop, 1:1 mobile; object-position:70% 50%.",
+        "Автор и отдельная лицензия исходного проектного материала не документированы."
+      ],
+      "role": "photography",
+      "sectionIds": [
+        "gallery"
+      ],
+      "aspectRatio": "2560:1709",
+      "composition": "Игровое место справа с монитором, клавиатурой и креслом; коридор преимущественно за пределами кропа. Текстовая область находится вне фотографии.",
+      "source": {
+        "kind": "project",
+        "reference": "src/assets/gallery-3.jpg"
+      },
+      "destination": "src/assets/gallery-3.jpg"
+    },
+    {
+      "id": "club_gallery_photo_4",
+      "kind": "image",
+      "status": "existing",
+      "purpose": "Четвёртая запись существующей галереи.",
+      "requirements": [
+        "Проверен JPEG 2560×1709, 2225352 байта.",
+        "Полный повтор gallery-2.jpg и standard.jpg; не заявлять четыре уникальных ракурса.",
+        "Alt должен описывать игровые компьютеры, а не зону отдыха.",
+        "Рамка 21:25 desktop, 1:1 mobile; object-position:45% 50%. Автор и отдельная лицензия не документированы."
+      ],
+      "role": "photography",
+      "sectionIds": [
+        "gallery"
+      ],
+      "aspectRatio": "2560:1709",
+      "composition": "Фронтальный ряд игровых мест с красной подсветкой системных блоков. Сохранить центральные мониторы и кресла; текст и управление вне фотографии.",
+      "source": {
+        "kind": "project",
+        "reference": "src/assets/gallery-4.jpg"
+      },
+      "destination": "src/assets/gallery-4.jpg"
+    },
+    {
+      "id": "game_cs2_art",
+      "kind": "image",
+      "status": "existing",
+      "purpose": "Существующая обложка Counter-Strike 2 в пересмотренной панели Avoora.",
+      "requirements": [
+        "Проверен JPEG 387×516, 199692 пикселя, 34068 байт; минимальные требования для существующего растра выполнены.",
+        "Показывать целиком через contain, высота до 258 CSS px для плотности 2×; это укладывается в предусмотренный предел 285px.",
+        "Серия до 720px, внешние рамки 47:25 desktop и 71:50 mobile. Не растягивать обложку до ширины рамки.",
+        "Сохранение существующего файла, импортируемого PopularGames.jsx; новая лицензия не приобреталась, исходные условия использования не документированы."
+      ],
+      "role": "editorial_illustration",
+      "sectionIds": [
+        "games"
+      ],
+      "aspectRatio": "3:4",
+      "composition": "Два оперативника на оранжевом фоне, название игры сверху. Целая обложка центрирована над нижней полосой метаданных. Текст страницы не перекрывает персонажей или встроенное название; поля заполняет обычная поверхность Brand.",
+      "source": {
+        "kind": "project",
+        "reference": "src/assets/game-cs2.jpg"
+      },
+      "destination": "src/assets/game-cs2.jpg"
+    },
+    {
+      "id": "game_dota2_art",
+      "kind": "image",
+      "status": "existing",
+      "purpose": "Существующая обложка Dota 2 в пересмотренной панели Avoora.",
+      "requirements": [
+        "Проверен JPEG 590×338, 199420 пикселей, 25958 байт; минимальные требования для существующего растра выполнены.",
+        "Contain без кропа; рекомендуемый предел 295×169 CSS px для плотности 2×. Не увеличивать до заполнения рамки.",
+        "Внешние рамки 47:25 desktop и 71:50 mobile, серия до 720px.",
+        "Существующий импорт PopularGames.jsx; новая лицензия не приобреталась, исходные условия использования не документированы."
+      ],
+      "role": "editorial_illustration",
+      "sectionIds": [
+        "games"
+      ],
+      "aspectRatio": "295:169",
+      "composition": "Группа героев с главным персонажем по центру и встроенным названием снизу. Весь горизонтальный оригинал расположен по центру области над подписью. Метаданные страницы не накладываются на встроенный логотип.",
+      "source": {
+        "kind": "project",
+        "reference": "src/assets/game-dota2.jpg"
+      },
+      "destination": "src/assets/game-dota2.jpg"
+    },
+    {
+      "id": "game_gta5_art",
+      "kind": "image",
+      "status": "existing",
+      "purpose": "Существующая обложка GTA V в пересмотренной панели Avoora.",
+      "requirements": [
+        "Проверен JPEG 470×652, 306440 пикселей, 81767 байт.",
+        "Contain, без обрезки коллажа; высота до 285 CSS px и ширина около 205px.",
+        "Внешние рамки 47:25 desktop и 71:50 mobile, серия до 720px. Исходный файл не изменять.",
+        "Существующий импорт PopularGames.jsx; новая лицензия не приобреталась, исходные условия использования не документированы."
+      ],
+      "role": "editorial_illustration",
+      "sectionIds": [
+        "games"
+      ],
+      "aspectRatio": "235:326",
+      "composition": "Вертикальный коллаж персонажей и транспорта с крупным центральным названием GTA V. Обложка целиком центрирована над нижней полосой; подпись страницы не закрывает сюжет или логотип.",
+      "source": {
+        "kind": "project",
+        "reference": "src/assets/game-gta5.jpg"
+      },
+      "destination": "src/assets/game-gta5.jpg"
+    },
+    {
+      "id": "game_valorant_art",
+      "kind": "image",
+      "status": "existing",
+      "purpose": "Существующая обложка Valorant в пересмотренной панели Avoora.",
+      "requirements": [
+        "Проверен JPEG 480×640, 307200 пикселей, 47138 байт.",
+        "Contain, без обрезки персонажа и названия; высота до 285 CSS px, ширина около 214px.",
+        "Внешние рамки 47:25 desktop и 71:50 mobile, серия до 720px.",
+        "Существующий импорт PopularGames.jsx; новая лицензия не приобреталась, исходные условия использования не документированы."
+      ],
+      "role": "editorial_illustration",
+      "sectionIds": [
+        "games"
+      ],
+      "aspectRatio": "3:4",
+      "composition": "Джетт на коралловом фоне с названием Valorant снизу. Целая вертикальная обложка по центру, без фильтров и размытых дублей. Метаданные находятся в отдельной нижней полосе панели.",
+      "source": {
+        "kind": "project",
+        "reference": "src/assets/game-valorant.jpg"
+      },
+      "destination": "src/assets/game-valorant.jpg"
+    },
+    {
+      "id": "game_fortnite_art",
+      "kind": "image",
+      "status": "existing",
+      "purpose": "Существующая обложка Fortnite в пересмотренной панели Avoora.",
+      "requirements": [
+        "Проверен JPEG 335×597, 199995 пикселей, 23060 байт.",
+        "Contain без кропа; высота до 285 CSS px, ширина около 160px. Не увеличивать до ширины панели.",
+        "Внешние рамки 47:25 desktop и 71:50 mobile, серия до 720px.",
+        "Существующий импорт PopularGames.jsx; новая лицензия не приобреталась, исходные условия использования не документированы."
+      ],
+      "role": "editorial_illustration",
+      "sectionIds": [
+        "games"
+      ],
+      "aspectRatio": "335:597",
+      "composition": "Название Fortnite в верхней части голубого поля, группа персонажей снизу. Сохранить весь узкий оригинал по центру области над подписью; текст страницы не перекрывает персонажей. Без декоративного заполнения боковых полей.",
+      "source": {
+        "kind": "project",
+        "reference": "src/assets/game-fortnite.jpg"
+      },
+      "destination": "src/assets/game-fortnite.jpg"
+    },
+    {
+      "id": "font_unbounded",
+      "kind": "font",
+      "status": "ready",
+      "purpose": "Утверждённая единая гарнитура главной страницы.",
+      "requirements": [
+        "Локальный Unbounded-variable.ttf существует, 778272 байта; ранее проверены сигнатура TrueType и ось wght 200–900.",
+        "Использовать normal 400, 500, 600 и 700. Отдельных статических файлов не требуется; курсив не приобретён и не нужен.",
+        "Проверено покрытие русского алфавита с Ё/ё, латиницы, цифр и знака рубля.",
+        "Лицензия public/fonts/unbounded/OFL.txt существует, 4392 байта; метаданные официального источника сохранены в METADATA.pb.",
+        "При Build проверить фактическую браузерную загрузку через document.fonts.ready и document.fonts.check; синтетические начертания не использовать."
+      ],
+      "role": "font",
+      "sectionIds": [
+        "home",
+        "zones",
+        "prices",
+        "gallery",
+        "games",
+        "booking",
+        "contacts"
+      ],
+      "source": {
+        "kind": "external",
+        "reference": "https://github.com/google/fonts/tree/main/ofl/unbounded",
+        "license": "SIL Open Font License 1.1; Copyright 2022 The Unbounded Project Authors. Локальная копия: public/fonts/unbounded/OFL.txt."
+      },
+      "destination": "public/fonts/unbounded/Unbounded-variable.ttf"
+    }
+  ]
+}

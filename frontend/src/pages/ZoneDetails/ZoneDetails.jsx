@@ -1,0 +1,308 @@
+import { Link, useParams } from 'react-router-dom';
+import {
+  LuArrowLeft,
+  LuCheck,
+  LuMonitor,
+  LuMouse,
+  LuCpu,
+  LuMemoryStick,
+  LuGamepad2,
+  LuKeyboard,
+} from 'react-icons/lu';
+
+import localZones from '../../data/zones';
+import { getRooms, matchRoom } from '@/entities/room';
+import { useState, useEffect } from 'react';
+import { apiError } from '@/shared/api';
+import './ZoneDetails.css';
+import LiveTariffs from '../../components/Prices/LiveTariffs';
+import '../../components/Prices/Prices.css';
+
+function ZoneDetails() {
+  const { id } = useParams();
+
+  const [rooms, setRooms] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    getRooms(controller.signal)
+      .then(data => {
+        setRooms(data);
+      })
+      .catch(err => {
+        if (!controller.signal.aborted) {
+          setError(apiError(err));
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      });
+
+    return () => controller.abort();
+  }, []);
+
+  const zone = localZones
+    .map(localZone => {
+      const room = matchRoom(rooms, localZone.id);
+
+      if (!room) return null;
+
+      return {
+        ...localZone,
+        id: room.id,
+        name: room.name,
+        description: room.description,
+      };
+    })
+    .find(item => item && String(item.id) === id);
+
+     if (loading) {
+    return (
+      <main className="zone-details">
+        <p>Загружаем информацию о зоне...</p>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="zone-details">
+        <p>{error}</p>
+      </main>
+    );
+  }
+
+  if (!zone) {
+    return (
+      <main className="zone-details zone-details--not-found">
+        <div className="zone-details__not-found">
+          <span>404</span>
+
+          <h1>ЗОНА НЕ НАЙДЕНА</h1>
+
+          <p>
+            Такой игровой зоны пока не существует.
+          </p>
+
+          <Link
+            to="/"
+            className="zone-details__back-button"
+          >
+            Вернуться на главную
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
+  return (
+    <main className="zone-details">
+
+      {/* HERO */}
+
+      <section className="zone-details__hero">
+
+        <img
+          src={zone.image}
+          alt={zone.name}
+          className="zone-details__hero-image"
+        />
+
+        <div className="zone-details__hero-overlay" />
+
+        <div className="zone-details__hero-content">
+
+          <Link
+            to="/"
+            className="zone-details__back"
+          >
+            <LuArrowLeft />
+            <span>Назад к зонам</span>
+          </Link>
+
+          <span className="zone-details__eyebrow">
+            {zone.label}
+          </span>
+
+          <h1 className="zone-details__title">
+            {zone.name}
+          </h1>
+
+          <p className="zone-details__description">
+            {zone.description}
+          </p>
+
+          <div className="zone-details__hero-bottom">
+
+            <div className="zone-details__price">
+              <a href="#zone-tariffs">Актуальные тарифы ↓</a>
+            </div>
+
+            <Link
+              to={`/booking?zone=${zone.id}`}
+              className="zone-details__booking"
+            >
+              Забронировать
+              <span>→</span>
+            </Link>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* EQUIPMENT */}
+
+      <section className="zone-details__content">
+
+        <div className="zone-details__section-header">
+
+          <span className="zone-details__section-label">
+            ОБОРУДОВАНИЕ
+          </span>
+
+          <h2>
+            ЧТО ТЕБЯ
+            <br />
+            <span>ЖДЁТ</span>
+          </h2>
+
+        </div>
+
+        <div className="zone-details__equipment">
+
+          {Object.entries(zone.equipment).map(
+            ([key, value]) => {
+
+              const icons = {
+                processor: <LuCpu />,
+                graphics: <LuMonitor />,
+                ram: <LuMemoryStick />,
+                monitor: <LuMonitor />,
+                keyboard: <LuKeyboard />,
+                mouse: <LuMouse />,
+                headset: <LuGamepad2 />,
+                console: <LuGamepad2 />,
+                display: <LuMonitor />,
+                controller: <LuGamepad2 />,
+                sound: <LuGamepad2 />,
+              };
+
+              const labels = {
+                processor: 'ПРОЦЕССОР',
+                graphics: 'ВИДЕОКАРТА',
+                ram: 'ОПЕРАТИВНАЯ ПАМЯТЬ',
+                monitor: 'МОНИТОР',
+                keyboard: 'КЛАВИАТУРА',
+                mouse: 'МЫШЬ',
+                headset: 'ГАРНИТУРА',
+                console: 'КОНСОЛЬ',
+                display: 'ЭКРАН',
+                controller: 'КОНТРОЛЛЕРЫ',
+                sound: 'ЗВУК',
+              };
+
+              return (
+                <div
+                  className="zone-details__equipment-card"
+                  key={key}
+                >
+                  <div className="zone-details__equipment-icon">
+                    {icons[key] || <LuCheck />}
+                  </div>
+
+                  <div>
+                    <span>
+                      {labels[key] || key}
+                    </span>
+
+                    <strong>
+                      {value}
+                    </strong>
+                  </div>
+                </div>
+              );
+            }
+          )}
+
+        </div>
+
+      </section>
+
+      {/* FEATURES */}
+
+      <section className="zone-details__features">
+
+        <div className="zone-details__section-header">
+
+          <span className="zone-details__section-label">
+            В ЗОНЕ ЕСТЬ
+          </span>
+
+          <h2>
+            ВСЁ ДЛЯ
+            <br />
+            <span>КОМФОРТНОЙ ИГРЫ</span>
+          </h2>
+
+        </div>
+
+        <div className="zone-details__features-list">
+
+          {zone.features.map((feature) => (
+            <div
+              className="zone-details__feature"
+              key={feature}
+            >
+              <LuCheck />
+              <span>
+                {feature}
+              </span>
+            </div>
+          ))}
+
+        </div>
+
+      </section>
+
+      {/* TARIFFS */}
+
+      <section className="zone-details__tariffs" id="zone-tariffs">
+
+        <div className="zone-details__section-header">
+
+          <span className="zone-details__section-label">
+            ЦЕНЫ
+          </span>
+
+          <h2>
+            ВЫБЕРИ
+            <br />
+            <span>СВОЙ ТАРИФ</span>
+          </h2>
+
+        </div>
+
+        <LiveTariffs roomName={zone.name} />
+
+        <Link
+          to={`/booking?zone=${zone.id}`}
+          className="zone-details__main-button"
+        >
+          Забронировать игровое место
+          <span>→</span>
+        </Link>
+
+      </section>
+
+    </main>
+  );
+}
+
+export default ZoneDetails;

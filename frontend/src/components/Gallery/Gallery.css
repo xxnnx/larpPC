@@ -1,0 +1,174 @@
+.gallery {
+  position: relative;
+  padding: 120px 0;
+  background: #101010;
+  overflow: hidden;
+}
+
+.gallery__container {
+  width: min(1200px, calc(100% - 80px));
+  margin: 0 auto;
+}
+
+.gallery__header {
+  margin-bottom: 55px;
+}
+
+.gallery__eyebrow {
+  display: block;
+  margin-bottom: 14px;
+  color: #d100ff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 4px;
+}
+
+.gallery__title {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(38px, 5vw, 68px);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -2px;
+}
+
+.gallery__title span {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.gallery__slider {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr) 180px;
+  align-items: center;
+  gap: 20px;
+
+  min-height: 500px;
+}
+
+.gallery__side,
+.gallery__main {
+  height: 500px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.gallery__side {
+  opacity: 0.45;
+}
+
+.gallery__main {
+  position: relative;
+}
+
+.gallery__side img,
+.gallery__main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery__main img {
+  transition: transform 0.6s ease;
+}
+
+.gallery__main:hover img {
+  transform: scale(1.03);
+}
+
+/* Стрелки */
+
+.gallery__arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+
+  background: rgba(10, 10, 10, 0.75);
+  color: #fff;
+
+  cursor: pointer;
+
+  transform: translateY(-50%);
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.gallery__arrow:hover {
+  background: #d100ff;
+  border-color: #d100ff;
+}
+
+.gallery__arrow--left {
+  left: 155px;
+}
+
+.gallery__arrow--right {
+  right: 155px;
+}
+
+.gallery__arrow svg {
+  width: 24px;
+  height: 24px;
+}
+
+
+/* Нижняя часть */
+
+.gallery__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 25px;
+}
+
+.gallery__dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gallery__dot {
+  width: 28px;
+  height: 2px;
+  padding: 0;
+
+  border: none;
+
+  background: rgba(255, 255, 255, 0.25);
+
+  cursor: pointer;
+
+  transition:
+    width 0.25s ease,
+    background 0.25s ease;
+}
+.gallery__dot:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.gallery__dot--active {
+  width: 45px;
+  background: #d100ff;
+}
+
+.gallery__counter {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
