@@ -9,7 +9,12 @@
 .header__login:hover, .header__logout:hover { border-color: var(--accent-light); background: #d100ff15; }
 .header__user { display: flex; align-items: center; gap: 8px; color: white; text-decoration: none; }
 .header__user-avatar { display: grid; place-items: center; width: 36px; height: 36px; background: #d100ff25; border: 1px solid var(--accent); border-radius: 50%; }
-.header__user-name { max-width: 100px; overflow: hidden; text-overflow: ellipsis; }
+.header__user-name { max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.header__user--admin { min-height: 44px; padding: 0 12px 0 7px; gap: 9px; border: 1px solid #ffffff26; border-radius: var(--button-radius); background: #ffffff08; transition: border-color .2s, background .2s; }
+.header__user--admin:hover { border-color: #b94dd0; background: #d100ff12; }
+.header__user--admin .header__user-avatar { width: 30px; height: 30px; border-color: #b735d0; font-size: 12px; }
+.header__user--admin .header__user-name { max-width: none; font-size: 13px; font-weight: 600; }
+.header__user-arrow { color: #bda9c5; font-size: 14px; }
 .header__menu-toggle { display: none; }
 @media (max-width: 1050px) {
  .header { width: calc(100% - 40px); height: 80px; }
@@ -18,4 +23,4 @@
  .header__navigation--open { display: flex; flex-direction: column; gap: 0; }
  .header__link { padding: 14px 0; }
 }
-@media (max-width: 480px) { .header__brand { font-size: 14px; gap: 7px; } .header__brand svg { font-size: 20px; } .header { gap: 8px; } .header__user-name { display: none; } .header__account { gap: 6px; } .header__login, .header__logout { padding: 0 10px; gap: 6px; } }
+@media (max-width: 480px) { .header__brand { font-size: 14px; gap: 7px; } .header__brand svg { font-size: 20px; } .header { gap: 8px; } .header__user-name, .header__user-arrow { display: none; } .header__user--admin { padding: 0 6px; } .header__account { gap: 6px; } .header__login, .header__logout { padding: 0 10px; gap: 6px; } }

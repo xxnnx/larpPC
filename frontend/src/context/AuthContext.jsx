@@ -72,6 +72,7 @@ export default function AuthProvider({ children }) {
     localStorage.setItem('token', data.token);
     setUser(data.user);
     setAuthError('');
+    return data.user;
   };
 
   const register = async (details) => {

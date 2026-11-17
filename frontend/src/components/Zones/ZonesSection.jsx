@@ -34,7 +34,7 @@ function ZonesSection() {
     return () => controller.abort();
   }, []);
 
-  // Объединяем данные из БД с локальными характеристиками и изображениями
+
   const zones = localZones
     .map(localZone => {
       const room = matchRoom(rooms, localZone.id);

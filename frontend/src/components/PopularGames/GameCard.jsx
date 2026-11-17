@@ -33,11 +33,15 @@ function GameCard({
     <article className="game-card">
       <div className="game-card__image-wrapper">
 
-        <img
-          src={image}
-          alt={name}
-          className="game-card__image"
-        />
+        {image ? (
+          <img
+            src={image}
+            alt={name}
+            className="game-card__image"
+          />
+        ) : (
+          <div className="game-card__image-placeholder" aria-hidden="true">G</div>
+        )}
 
         <div className="game-card__overlay" />
 

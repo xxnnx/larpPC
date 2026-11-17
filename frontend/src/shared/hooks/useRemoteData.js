@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useReducer, useState } from 'react';
 import { apiError } from '@/shared/api';
 
-// Keep the loader stable (module function or useCallback). Only the current
-// request may publish a result, including after refresh or switching tabs.
+
 export function useRemoteData(loader, initialData, enabled = true) {
   const [revision, refresh] = useReducer(value => value + 1, 0);
   const request = useMemo(() => ({ loader, revision, enabled }), [loader, revision, enabled]);

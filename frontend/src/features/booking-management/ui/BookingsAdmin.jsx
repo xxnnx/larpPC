@@ -45,6 +45,7 @@ export default function BookingsAdmin({ active, mutation }) {
       <div className={styles.list}>
         {model.paginatedBookings.map(entry => {
           const place = model.places.get(entry.computerId);
+          const cancellationRequest = model.pendingRequests.get(entry.id);
 
           return (
             <article key={entry.id} className={styles.row}>
@@ -64,7 +65,6 @@ export default function BookingsAdmin({ active, mutation }) {
                 </p>
               </div>
 
-              {/* Цена, статус и отмена */}
               <div className={styles.bookingInfo}>
                 <strong>{money(entry.priceAtBooking)}</strong>
 
@@ -72,39 +72,51 @@ export default function BookingsAdmin({ active, mutation }) {
                   {bookingStatuses[entry.status] || entry.status}
                 </p>
 
-                {entry.status === 'ACTIVE' && (
-                  model.cancelId === entry.id ? (
-                    <div className={styles.actions}>
-                      <span>
-                        Отменить бронь #{entry.id}?
-                        Деньги автоматически не возвращаются.
-                      </span>
+                {cancellationRequest && (
+                  <div className={styles.reviewPanel}>
+                    <strong>Запрос на отмену</strong>
+                    <p>
+                      Причина: {cancellationRequest.reason || 'не указана'}
+                    </p>
 
+                    {model.reviewId === cancellationRequest.id ? (
+                      <>
+                        <textarea
+                          value={model.adminComment}
+                          onChange={event => model.setAdminComment(event.target.value)}
+                          placeholder="Комментарий игроку (необязательно)"
+                          maxLength={1000}
+                          rows={3}
+                          disabled={busy}
+                        />
+                        <div className={styles.actions}>
+                          <Button
+                            disabled={busy}
+                            onClick={() => model.review(cancellationRequest, true)}
+                          >
+                            Подтвердить отмену
+                          </Button>
+                          <Button
+                            className={styles.cancelButton}
+                            disabled={busy}
+                            onClick={() => model.review(cancellationRequest, false)}
+                          >
+                            Отклонить
+                          </Button>
+                          <Button disabled={busy} onClick={model.cancelReview}>
+                            Назад
+                          </Button>
+                        </div>
+                      </>
+                    ) : (
                       <Button
                         disabled={busy}
-                        onClick={() => model.cancel(entry.id)}
+                        onClick={() => model.startReview(cancellationRequest.id)}
                       >
-                        Да, отменить
+                        Рассмотреть запрос
                       </Button>
-
-                      <Button
-                        disabled={busy}
-                        onClick={() => model.setCancelId(null)}
-                      >
-                        Назад
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className={styles.actions}>
-                      <Button
-                        disabled={busy}
-                        className={styles.cancelButton}
-                        onClick={() => model.setCancelId(entry.id)}
-                      >
-                        Отменить бронь
-                      </Button>
-                    </div>
-                  )
+                    )}
+                  </div>
                 )}
               </div>
             </article>

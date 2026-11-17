@@ -16,6 +16,7 @@ function ProtectedRoute({ children, requiredRole }) {
   }
 
   if (requiredRole && user?.role !== requiredRole) return <main><h1>Доступ ограничен</h1><p>Этот раздел доступен только администратору.</p><Link to="/">На главную</Link></main>;
+  if (!requiredRole && user?.role === 'ADMIN') return <Navigate to="/admin" replace />;
   return children;
 }
 

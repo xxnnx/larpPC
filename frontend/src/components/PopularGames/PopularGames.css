@@ -99,6 +99,26 @@
   gap: 16px;
   justify-content: center;
 }
+
+.popular-games__status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 160px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.55);
+  text-align: center;
+}
+
+.popular-games__status button {
+  padding: 10px 14px;
+  border: 1px solid rgba(209, 0, 255, 0.45);
+  border-radius: 8px;
+  color: #fff;
+  background: rgba(209, 0, 255, 0.1);
+  cursor: pointer;
+}
 /* =========================
    FOOTER
 ========================= */

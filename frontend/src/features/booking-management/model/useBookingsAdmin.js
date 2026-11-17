@@ -1,25 +1,31 @@
 
 import { useState } from 'react';
-import { getAllBookings, adminCancelBooking } from '@/entities/booking';
+import {
+  approveCancellationRequest,
+  getAllBookings,
+  getAllCancellationRequests,
+  rejectCancellationRequest
+} from '@/entities/booking';
 import { getRooms } from '@/entities/room';
 import { getComputersInRooms } from '@/entities/computer';
 import { useRemoteData } from '@/shared/hooks';
 
 async function loadBookings(signal) {
-  const [rooms, bookings] = await Promise.all([
+  const [rooms, bookings, requests] = await Promise.all([
     getRooms(signal),
-    getAllBookings(signal)
+    getAllBookings(signal),
+    getAllCancellationRequests(signal)
   ]);
 
   const computers = await getComputersInRooms(rooms, signal);
 
-  return { bookings, computers };
+  return { bookings, computers, requests };
 }
 
 export function useBookingsAdmin(active, mutation) {
   const remote = useRemoteData(
     loadBookings,
-    { bookings: [], computers: [] },
+    { bookings: [], computers: [], requests: [] },
     active
   );
 
@@ -27,7 +33,8 @@ export function useBookingsAdmin(active, mutation) {
   const [filter, setFilter] = useState('ACTIVE');
 
   
-  const [cancelId, setCancelId] = useState(null);
+  const [reviewId, setReviewId] = useState(null);
+  const [adminComment, setAdminComment] = useState('');
 
   
   const [page, setPage] = useState(1);
@@ -41,6 +48,12 @@ export function useBookingsAdmin(active, mutation) {
   
   const places = new Map(
     remote.data.computers.map(computer => [computer.id, computer])
+  );
+
+  const pendingRequests = new Map(
+    remote.data.requests
+      .filter(request => request.status === 'PENDING')
+      .map(request => [request.bookingId, request])
   );
 
   
@@ -62,24 +75,39 @@ export function useBookingsAdmin(active, mutation) {
   function changeFilter(value) {
     setFilter(value);
     setPage(1);
-    setCancelId(null);
+    setReviewId(null);
+    setAdminComment('');
   }
 
   
   function changePage(value) {
     setPage(Math.max(1, Math.min(value, totalPages)));
-    setCancelId(null);
+    setReviewId(null);
+    setAdminComment('');
   }
 
-  
-  async function cancel(id) {
-    if (
-      await mutation.run(
-        () => adminCancelBooking(id),
-        `Бронь #${id} отменена.`
-      )
-    ) {
-      setCancelId(null);
+  function startReview(requestId) {
+    setReviewId(requestId);
+    setAdminComment('');
+    mutation.clear();
+  }
+
+  function cancelReview() {
+    setReviewId(null);
+    setAdminComment('');
+  }
+
+  async function review(request, approved) {
+    const action = approved
+      ? () => approveCancellationRequest(request.id, adminComment.trim())
+      : () => rejectCancellationRequest(request.id, adminComment.trim());
+
+    const message = approved
+      ? `Бронь #${request.bookingId} отменена. Деньги возвращены игроку.`
+      : `Запрос на отмену брони #${request.bookingId} отклонён.`;
+
+    if (await mutation.run(action, message)) {
+      cancelReview();
       remote.refresh();
     }
   }
@@ -89,11 +117,15 @@ export function useBookingsAdmin(active, mutation) {
     bookings,
     paginatedBookings,
     places,
+    pendingRequests,
     filter,
     setFilter: changeFilter,
-    cancelId,
-    setCancelId,
-    cancel,
+    reviewId,
+    adminComment,
+    setAdminComment,
+    startReview,
+    cancelReview,
+    review,
     page: currentPage,
     totalPages,
     setPage: changePage,

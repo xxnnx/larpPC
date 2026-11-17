@@ -31,7 +31,9 @@ export default function WalletPanel() {
       {wallet.loading ? <p role="status">Загружаем баланс…</p> : wallet.error ? <p role="alert">{wallet.error}</p> : <strong>{money(wallet.balance)}</strong>}
       </div>
       <button className="profile-refresh" type="button" disabled={wallet.loading || history.loading} onClick={() => { wallet.refresh(); setVersion(value => value + 1); }}>Обновить кошелёк</button></div>
-    <h3>История операций</h3>
+    <p className="wallet-panel__hint">Для оплаты бронирований · Пополнение у администратора клуба</p>
+    <details className="wallet-panel__details">
+    <summary>История операций</summary>
     {history.loading && <p role="status">Загружаем операции…</p>}
     {history.error && <p role="alert">{history.error}</p>}
     {!history.loading && !history.error && !history.items.length && <p>Операций пока нет. Пополни баланс у администратора, чтобы оплатить первую бронь.</p>}
@@ -39,5 +41,6 @@ export default function WalletPanel() {
       <div><h4>{labels[item.type] || 'Операция по балансу'}</h4><p>{displayDateTime(item.createdAt)} (МСК){item.bookingId != null && ` · Бронь №${item.bookingId}`}</p><p>{item.description}</p></div>
       <div><strong>{Number(item.balanceAfter) - Number(item.balanceBefore) > 0 ? '+' : Number(item.balanceAfter) - Number(item.balanceBefore) < 0 ? '−' : ''}{money(Math.abs(Number(item.amount)))}</strong><p>Остаток: {money(item.balanceAfter)}</p></div>
     </article>)}</div>
+    </details>
   </section>;
 }

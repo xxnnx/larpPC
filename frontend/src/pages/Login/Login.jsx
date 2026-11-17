@@ -20,7 +20,11 @@ function Login() {
     setError('');
     setSubmitting(true);
     try {
-      await login({ email: email.trim(), password });
+      const authenticatedUser = await login({ email: email.trim(), password });
+      if (authenticatedUser.role === 'ADMIN') {
+        navigate('/admin', { replace: true });
+        return;
+      }
       const destination = location.state?.from;
       navigate(typeof destination === 'string' && destination.startsWith('/') && !destination.startsWith('//') ? destination : '/profile', { replace: true });
     } catch (err) {

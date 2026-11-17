@@ -718,6 +718,32 @@
   color: #fff;
 }
 
+.profile-confirm textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: #171717;
+  color: white;
+  font: inherit;
+  resize: vertical;
+}
+
+.profile-cancellation-status {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.profile-cancellation-status p {
+  margin: 8px 0 0;
+}
+
 @media (max-width: 600px) {
   .profile-page {
     padding: 40px 0 80px;

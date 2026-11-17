@@ -1,8 +1,15 @@
-.admin { width: var(--container); margin: 0 auto; padding: 40px 0 80px; }
-.admin a { color: var(--accent-light); }
+.admin { width: min(1120px, calc(100% - 48px)); margin: 0 auto; padding: 32px 0 80px; --border: #302b35; --surface: #17151b; --muted: #a39cae; }
+.admin a { color: #d4b5e7; text-decoration: none; }
 .header { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
-.header h1 { font-size: clamp(26px, 4vw, 40px); margin: 20px 0 8px; }
+.header h1 { font-size: clamp(26px, 4vw, 36px); font-weight: 600; letter-spacing: -.035em; margin: 24px 0 8px; }
 .header p { color: var(--muted); line-height: 1.6; }
-.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 28px 0 16px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
-.tabs button[aria-current] { background: #622076; border-color: var(--accent-light); }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 28px 0; padding: 6px; border: 1px solid var(--border); border-radius: 12px; background: #121014; }
+.tabs button { flex: 1; border-color: transparent; background: transparent; white-space: nowrap; }
+.tabs button[aria-current] { background: #2b2035; color: #e5c9f7; border-color: #574063; }
+.admin button { min-height: 40px; border-radius: 9px; font-size: 12px; transition: background .18s, border-color .18s; }
+.admin > div > section > h2 { font-size: 21px; font-weight: 600; letter-spacing: -.025em; }
+.admin > div > section > p { color: var(--muted); font-size: 13px; line-height: 1.7; }
+.admin input, .admin select, .admin textarea { box-sizing: border-box; border-color: #3e3547; border-radius: 8px; font-size: 14px; }
+.admin :is(button, a):focus-visible { outline: 2px solid #c391e6; outline-offset: 3px; }
+@media (max-width: 600px) { .admin { width: calc(100% - 32px); padding-top: 24px; } .tabs { display: grid; grid-template-columns: 1fr 1fr; } .tabs button { padding: 10px 8px; } }
 @media (max-width: 600px) { .header { align-items: flex-start; } }

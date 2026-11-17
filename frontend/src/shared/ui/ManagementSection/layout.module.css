@@ -27,15 +27,15 @@
 
 
 .filters {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin: 20px 0 28px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 20px;
 }
 
 /* Кнопки фильтрации */
 .filterButton {
-  width: 100%;
+  width: auto;
   min-width: 0;
   padding: 12px 16px;
   border: 1px solid var(--border);
@@ -45,19 +45,21 @@
 
 /* Активная кнопка */
 .selected {
-  background: #622076;
-  color: #ffffff;
+  background: #2b2035;
+  color: #e5c9f7;
+  border-color: #574063;
   
 }
 
 .selected:hover {
   
- background: #622076;
+ background: #35273f;
     border-color: var(--accent-light);
 }
 
 .list {
-  border-top: 1px solid var(--border);
+  display: grid;
+  gap: 12px;
 }
 
 .row {
@@ -65,8 +67,10 @@
   justify-content: space-between;
   align-items: center;
   gap: 24px;
-  padding: 24px 0;
-  border-bottom: 1px solid var(--border);
+  padding: 22px 24px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
 }
 
 .row > div {
@@ -74,6 +78,7 @@
 }
 
 .row p {
+  font-size: 13px;
   margin: 6px 0;
   color: var(--muted);
   overflow-wrap: anywhere;
@@ -96,10 +101,29 @@
 
 .bookingInfo strong {
   font-size: 18px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
 .bookingInfo p {
   margin: 0;
+}
+
+.reviewPanel {
+  width: min(420px, 100%);
+}
+
+.reviewPanel textarea {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: inherit;
+  font: inherit;
+  resize: vertical;
 }
 
 .cancelButton {
@@ -147,9 +171,9 @@
 }
 
 .currentPage {
-  background: #7c3aed;
-  color: white;
-  border-color: #7c3aed;
+  background: #2b2035;
+  color: #e5c9f7;
+  border-color: #574063;
 }
 
 @media (max-width: 600px) {
