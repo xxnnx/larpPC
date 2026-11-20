@@ -44,7 +44,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/tariffs/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/api/tariffs/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/bookings").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PATCH, "/api/bookings/*/cancel").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/wallet/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/wallet/top-up").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/games/**").permitAll()

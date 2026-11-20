@@ -30,24 +30,26 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @EntityGraph(attributePaths = {"computer", "tariff"})
     @Override
     List<Booking> findAll();
+    @EntityGraph(attributePaths = {"computer", "tariff", "user"})
+    List<Booking> findByStatus(BookingStatus status);
 
     List<Booking> findByStatusAndEndTimeLessThanEqual( BookingStatus status, LocalDateTime time );
 
     // проверка пересечения бронирований. (учитываются только активные бронирования)
-    @Query("""
+        @Query("""
         SELECT COUNT(b) > 0
         FROM Booking b
         WHERE b.computer.id = :computerId
-          AND b.status = :status
-          AND b.startTime < :endTime
-          AND b.endTime > :startTime
-    """)
-    boolean existsOverlappingBooking(
-            @Param("computerId") Long computerId,
-            @Param("status") BookingStatus status,
-            @Param("startTime") LocalDateTime startTime,
-            @Param("endTime") LocalDateTime endTime
-    );
+        AND b.status IN :statuses
+        AND b.startTime < :endTime
+        AND b.endTime > :startTime
+        """)
+        boolean existsOverlappingBooking(
+                @Param("computerId") Long computerId,
+                @Param("statuses") List<BookingStatus> statuses,
+                @Param("startTime") LocalDateTime startTime,
+                @Param("endTime") LocalDateTime endTime
+        );
     boolean existsByComputerIdAndStatus(Long computerId,BookingStatus status);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)

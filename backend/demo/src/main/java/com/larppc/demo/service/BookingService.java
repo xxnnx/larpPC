@@ -134,7 +134,10 @@ public class BookingService {
         boolean hasConflict =
                 bookingRepository.existsOverlappingBooking(
                         computerId,
-                        BookingStatus.ACTIVE,
+                        List.of(
+                            BookingStatus.ACTIVE,
+                            BookingStatus.CANCELLATION_REQUESTED
+                        ),
                         startTime,
                         endTime
                 );
@@ -173,7 +176,7 @@ public class BookingService {
     }
 
     @Transactional
-    public void cancelBooking(Long bookingId, Long userId) {
+    public void requestCancellation(Long bookingId, Long userId) {
 
         Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new IllegalArgumentException("Бронирование не найдено"));
 
@@ -181,16 +184,14 @@ public class BookingService {
 
         if (booking.getStatus() != BookingStatus.ACTIVE) { throw new IllegalStateException("Можно отменять только активные бронирования");}
 
-        walletService.refundForBooking(booking);
-        booking.setStatus(BookingStatus.CANCELLED);
-        bookingRepository.save(booking);
+        booking.setStatus(BookingStatus.CANCELLATION_REQUESTED);
     }
 
     @Transactional
-    public void adminCancelBooking(Long bookingId) {
+    public void approveCancellation(Long bookingId) {
         Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new IllegalArgumentException("Бронирование не найдено"));
 
-        if (booking.getStatus() != BookingStatus.ACTIVE) { throw new IllegalStateException("Можно отменить только активное бронирование");}
+        if (booking.getStatus() != BookingStatus.CANCELLATION_REQUESTED) { throw new IllegalStateException( "Бронирование не ожидает отмены");}
         
         walletService.refundForBooking(booking);
         booking.setStatus(BookingStatus.CANCELLED);
@@ -211,4 +212,18 @@ public class BookingService {
     @Scheduled(fixedDelay = 60_000)
     @Transactional
     public void autoCompleteBookings() { completeExpiredBookings(); }
+
+
+    @Transactional(readOnly = true)
+    public List<Booking> getCancellationRequests() {
+        return bookingRepository.findByStatus(BookingStatus.CANCELLATION_REQUESTED);
+    }
+
+    @Transactional
+    public void rejectCancellation(Long bookingId) {
+        Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new IllegalArgumentException("Бронирование не найдено"));
+
+        if (booking.getStatus() != BookingStatus.CANCELLATION_REQUESTED) {throw new IllegalStateException("Бронирование не ожидает отмены");}
+        booking.setStatus(BookingStatus.ACTIVE);
+    }
 }
