@@ -3,11 +3,10 @@
   flex-direction: column;
   gap: 20px;
   width: 100%;
-  max-width: 600px; /* Ширина карты */
+  max-width: 600px;
   margin: 0 auto;
 }
 
-/* Легенда (Свободно / Занято / Выбрано) */
 .seat-map-legend {
   display: flex;
   justify-content: center;
@@ -32,10 +31,8 @@
 .legend-color.busy { background-color: #1a1a1a; opacity: 0.5; }
 .legend-color.selected { background-color: #00ff88; }
 
-/* Сетка (Grid) */
 .seat-map-grid {
   display: grid;
-  /* repeat(auto-fill, minmax(...)) делает так, что компы сами переносятся на новую строку на узких экранах */
   grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
   gap: 15px;
   padding: 20px;
@@ -44,7 +41,6 @@
   border: 1px solid #333;
 }
 
-/* Кнопка одного компьютера */
 .seat-card {
   display: flex;
   flex-direction: column;
@@ -69,7 +65,6 @@
   font-size: 14px;
 }
 
-/* Состояния компьютера */
 .seat-card.free:hover {
   border-color: #00ff88;
   transform: translateY(-2px);

@@ -34,6 +34,23 @@ function Step({ number, title, children }) {
   );
 }
 
+function compareTariffs(a, b) {
+  const typeOrder = { HOURLY: 0, PACKAGE: 1 };
+  const typeDifference =
+    (typeOrder[a.tariffType] ?? 2) -
+    (typeOrder[b.tariffType] ?? 2);
+
+  if (typeDifference !== 0) return typeDifference;
+
+  const durationDifference =
+    Number(a.durationMinutes ?? Number.MAX_SAFE_INTEGER) -
+    Number(b.durationMinutes ?? Number.MAX_SAFE_INTEGER);
+
+  if (durationDifference !== 0) return durationDifference;
+
+  return String(a.name || '').localeCompare(String(b.name || ''), 'ru');
+}
+
 export default function Booking() {
   const wallet = useWallet();
   const [params] = useSearchParams();
@@ -72,7 +89,6 @@ export default function Booking() {
 
   const submitLock = useRef(false);
 
-  // 1. Загрузка залов
   useEffect(() => {
     const controller = new AbortController();
 
@@ -101,7 +117,6 @@ export default function Booking() {
     return () => controller.abort();
   }, [hint, retry]);
 
-  // 2. Загрузка компьютеров и тарифов выбранного зала
   useEffect(() => {
     const controller = new AbortController();
 
@@ -128,10 +143,12 @@ export default function Booking() {
 
         if (controller.signal.aborted) return;
 
-        const tariffs = allTariffs.filter(item =>
-          item.active &&
-          ['HOURLY', 'PACKAGE'].includes(item.tariffType)
-        );
+        const tariffs = allTariffs
+          .filter(item =>
+            item.active &&
+            ['HOURLY', 'PACKAGE'].includes(item.tariffType)
+          )
+          .sort(compareTariffs);
 
         setCatalog({ roomId, computers, tariffs });
 
@@ -171,7 +188,6 @@ export default function Booking() {
     return () => controller.abort();
   }, [roomId, tariffHint, durationHint, retry]);
 
-  // Данные выбранного зала
   const { computers, tariffs } =
     catalog.roomId === roomId
       ? catalog
@@ -183,13 +199,11 @@ export default function Booking() {
     item => String(item.id) === String(computerId)
   );
 
-  // Расчёт продолжительности
   const duration =
     tariff?.tariffType === 'PACKAGE'
       ? Number(tariff.durationMinutes)
       : Number(hours) * 60 + Number(minutes);
 
-  // Проверка даты и продолжительности
   const parsedStart = start ? bookingDate(start) : null;
 
   const validTime =
@@ -213,7 +227,6 @@ export default function Booking() {
       ? endDateTime(start, duration)
       : '';
 
-  // Расчёт стоимости
   const price = tariff
     ? Number(tariff.price) *
       (tariff.tariffType === 'PACKAGE' ? 1 : duration / 60)
@@ -226,7 +239,6 @@ export default function Booking() {
     wallet.balance !== null &&
     wallet.balance >= roundedPrice;
 
-  // 3. Проверка свободных компьютеров на выбранный интервал
   useEffect(() => {
     const controller = new AbortController();
 
@@ -295,12 +307,10 @@ export default function Booking() {
     loadError,
   ]);
 
-  // Проверка выбранного компьютера
   const isSeatAvailable =
     availableComputerIds !== null &&
     availableComputerIds.includes(String(computerId));
 
-  // Условия для создания бронирования
   const ready =
     computer?.status === 'AVAILABLE' &&
     isSeatAvailable &&
@@ -313,7 +323,6 @@ export default function Booking() {
     !availabilityError &&
     !loadError;
 
-  // 4. Создание бронирования
   async function submit(event) {
     event.preventDefault();
 
@@ -625,22 +634,16 @@ export default function Booking() {
                         На балансе: <strong>{money(wallet.balance)}</strong>
                       </p>
 
-                      {tariff && validDuration &&
-                        (enoughFunds ? (
-                          <p>
-                            После оплаты останется примерно{' '}
-                            {money(wallet.balance - roundedPrice)}.
-                          </p>
-                        ) : (
-                          <p
-                            role="status"
-                            style={{ color: 'var(--error-color, #d32f2f)' }}
-                          >
-                            Не хватает{' '}
-                            {money(roundedPrice - wallet.balance)}.
-                            Пополни баланс.
-                          </p>
-                        ))}
+                      {tariff && validDuration && !enoughFunds && (
+                        <p
+                          role="status"
+                          style={{ color: 'var(--error-color, #d32f2f)' }}
+                        >
+                          Не хватает{' '}
+                          {money(roundedPrice - wallet.balance)}.
+                          Пополни баланс.
+                        </p>
+                      )}
                     </>
                   )}
 
@@ -654,7 +657,7 @@ export default function Booking() {
                   </button>
 
                   <p className="booking__notice">
-                    Стоимость спишется при создании брони. При отмене автоматического возврата нет.
+                    Стоимость спишется при создании брони. При одобрении отмены деньги вернутся на баланс.
                   </p>
                 </Step>
 

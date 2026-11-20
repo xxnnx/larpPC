@@ -33,7 +33,6 @@
   margin: 20px 0 28px;
 }
 
-/* Кнопки фильтрации */
 .filterButton {
   width: 100%;
   min-width: 0;
@@ -43,7 +42,6 @@
   transition: background 0.2s, border-color 0.2s;
 }
 
-/* Активная кнопка */
 .selected {
   background: #622076;
   color: #ffffff;

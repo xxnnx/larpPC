@@ -23,7 +23,6 @@
   margin: 0 auto;
 }
 
-/* Main */
 
 .footer__main {
   display: grid;
@@ -32,7 +31,6 @@
   padding-bottom: 70px;
 }
 
-/* Brand */
 
 .footer__brand {
   display: flex;
@@ -64,7 +62,6 @@
   letter-spacing: 3px;
 }
 
-/* Contacts */
 
 .footer__contacts {
   display: flex;
@@ -102,7 +99,6 @@
   color: #fff;
 }
 
-/* Navigation */
 
 .footer__navigation {
   display: flex;
@@ -156,7 +152,6 @@
   width: 100%;
 }
 
-/* Bottom */
 
 .footer__bottom {
   display: flex;
@@ -179,7 +174,6 @@
   color: rgba(209, 0, 255, 0.5);
 }
 
-/* Tablet */
 
 @media (max-width: 900px) {
   .footer__main {
@@ -192,7 +186,6 @@
   }
 }
 
-/* Mobile */
 
 @media (max-width: 600px) {
   .footer {

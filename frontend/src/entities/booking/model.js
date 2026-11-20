@@ -1,1 +1,6 @@
-export const bookingStatuses = { ACTIVE: 'Активна', CANCELLED: 'Отменена', COMPLETED: 'Завершена' };
+export const bookingStatuses = {
+  ACTIVE: 'Активна',
+  CANCELLATION_REQUESTED: 'Ожидает отмены',
+  CANCELLED: 'Отменена',
+  COMPLETED: 'Завершена'
+};

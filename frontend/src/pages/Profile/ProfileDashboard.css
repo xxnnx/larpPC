@@ -1,0 +1,49 @@
+.profile-page .profile-page__hero { margin: 40px 0 28px; gap: 24px; align-items: center; }
+.profile-page .profile-page__eyebrow { color: #a39aa9; font-size: 10px; letter-spacing: .18em; margin-bottom: 12px; }
+.profile-page .profile-page__title { font-family: inherit; font-size: clamp(28px, 4vw, 42px); font-weight: 600; font-style: normal; letter-spacing: -.035em; line-height: 1.2; margin: 0 0 10px; text-transform: none; overflow-wrap: anywhere; }
+.profile-page .profile-page__hero p { font-size: 14px; color: #a39fa9; margin: 0; }
+.profile-page .profile-page__book { padding: 14px 20px; border-radius: 10px; font-size: 12px; font-weight: 600; letter-spacing: 0; white-space: nowrap; }
+.profile-page .wallet-panel { padding: 26px 28px 0; border: 1px solid #302c35; border-radius: 16px; background: #17151b; margin-bottom: 40px; }
+.profile-page .wallet-panel h2 { font-size: 13px; font-weight: 500; color: #bcb6c6; margin-bottom: 12px; }
+.profile-page .wallet-panel__balance strong { font-size: clamp(30px, 4vw, 42px); font-weight: 600; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.profile-page .wallet-panel__hint { font-size: 12px; color: #96909f; margin: 12px 0 22px; }
+.profile-page .wallet-panel__details { border-top: 1px solid #302c35; }
+.profile-page .wallet-panel__details summary { padding: 17px 0; cursor: pointer; font-size: 13px; color: #c9c2d2; }
+.profile-page .wallet-panel__details[open] { padding-bottom: 20px; }
+.profile-page .wallet-panel__details p { font-size: 13px; }
+.profile-page .profile-refresh { margin: 0; min-height: 40px; padding: 9px 14px; border: 1px solid #39333f; border-radius: 9px; background: transparent; color: #c7bdcf; font-size: 12px; cursor: pointer; }
+.profile-page .profile-refresh:hover { background: #25202c; }
+.profile-page .profile-refresh:disabled { opacity: .45; cursor: wait; }
+.profile-page .profile-section { margin: 0 0 38px; scroll-margin-top: 24px; }
+.profile-page .profile-section__header { margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.profile-page .profile-section__header h2 { margin: 0; font-family: inherit; font-size: 19px; font-weight: 600; font-style: normal; letter-spacing: -.025em; text-transform: none; }
+.profile-count { display: inline-flex; align-items: center; justify-content: center; min-width: 25px; height: 25px; padding: 0 6px; margin-left: 8px; border-radius: 7px; background: #25202c; color: #b8a7c9; font-size: 12px; vertical-align: middle; }
+.profile-empty { text-align: center; padding: 36px 24px; border: 1px dashed #343039; border-radius: 14px; background: #131215; }
+.profile-empty__symbol { display: inline-grid; place-items: center; width: 40px; height: 40px; color: #c7a0e2; background: #251c2e; border-radius: 12px; font-size: 25px; }
+.profile-empty h3 { margin: 16px 0 8px; font-size: 17px; font-weight: 500; }
+.profile-empty p { margin: 0 auto 20px; max-width: 380px; color: #a39cae; font-size: 13px; line-height: 1.7; }
+.profile-empty a { color: #d9b6ef; font-size: 13px; text-decoration: none; }
+.profile-empty a span { margin-left: 8px; }
+.profile-page .booking-card { padding: 24px; border: 1px solid #302b35; border-radius: 14px; background: #17151a; gap: 24px; }
+.profile-page .booking-card__number { background: #25202c; color: #b5a7c1; border: 0; border-radius: 8px; font-size: 13px; }
+.profile-page .booking-card__info h3 { font-family: inherit; font-size: 20px; font-style: normal; margin: 8px 0; }
+.profile-page .booking-card__info p { font-size: 13px; color: #ada5b6; line-height: 1.7; }
+.profile-page .booking-card__zone { font-size: 10px; letter-spacing: .1em; color: #bba5ce; }
+.profile-page .booking-card__side { flex-wrap: wrap; gap: 12px; }
+.profile-page .booking-card__status { font-size: 11px; padding: 6px 10px; border-radius: 6px; background: #25202c; color: #d4c2e1; }
+.profile-page .booking-card__cancel { font-size: 11px; letter-spacing: 0; min-height: 38px; padding: 8px 12px; border-radius: 8px; }
+.profile-page #history > p { color: #8e8798; font-size: 13px; padding: 16px 0; border-top: 1px solid #29252e; }
+.profile-page .profile-confirm { max-width: 380px; }
+.profile-page :is(button, a, summary, textarea):focus-visible { outline: 2px solid #c391e6; outline-offset: 4px; }
+@media (max-width: 650px) {
+  .profile-page .profile-page__hero { align-items: flex-start; margin-top: 28px; }
+  .profile-page .profile-page__book { width: 100%; text-align: center; box-sizing: border-box; }
+  .profile-page .wallet-panel { padding: 20px 20px 0; }
+  .profile-page .wallet-panel__balance { flex-direction: row; align-items: center; gap: 12px; }
+  .profile-page .wallet-panel__balance button { max-width: 120px; }
+  .profile-page .profile-section__header { flex-direction: row; align-items: center; }
+  .profile-page .profile-section__header h2 { font-size: 16px; }
+  .profile-page .booking-card { padding: 18px; }
+  .profile-page .booking-card__main { min-width: 0; }
+  .profile-page .booking-card__info { min-width: 0; overflow-wrap: anywhere; }
+}

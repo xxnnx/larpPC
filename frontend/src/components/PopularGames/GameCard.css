@@ -57,7 +57,6 @@
 }
 
 
-/* NUMBER */
 
 .game-card__number {
   position: absolute;
@@ -74,7 +73,6 @@
 }
 
 
-/* CONTENT */
 
 .game-card__content {
   position: absolute;
