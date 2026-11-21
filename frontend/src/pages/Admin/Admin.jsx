@@ -23,7 +23,7 @@ export default function Admin() {
   const mutation = useMutation();
   return <main className={styles.admin}>
     <header className={styles.header}>
-      <div><Link to="/">← GAMESENSE</Link><h1>Управление клубом</h1><p>{user.name} · Администратор</p></div>
+      <div><Link className={styles.backLink} to="/">← GAMESENSE</Link><h1>Управление клубом</h1><p>{user.name} · Администратор</p></div>
       <Button onClick={logout}>Выйти</Button>
     </header>
     <nav className={styles.tabs} aria-label="Разделы управления">

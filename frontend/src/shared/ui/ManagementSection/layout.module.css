@@ -100,6 +100,14 @@
   margin: 0;
 }
 
+.reviewPanel {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 14px 18px;
+}
+
 .cancelButton {
   background: transparent;
   color: #dc6262;
@@ -111,6 +119,18 @@
 
 .cancelButton:hover {
   background: rgba(220, 98, 98, 0.12);
+}
+
+.approveButton.approveButton {
+  background: transparent;
+  color: #64d98b;
+  border-color: #4dbb73;
+}
+
+.approveButton.approveButton:hover:not(:disabled) {
+  color: #8ae6a8;
+  background: rgba(77, 187, 115, 0.12);
+  border-color: #64d98b;
 }
 
 .actions {
@@ -166,6 +186,10 @@
     align-items: flex-start;
     text-align: left;
     width: 100%;
+  }
+
+  .reviewPanel {
+    justify-content: flex-start;
   }
 
   .actions {
