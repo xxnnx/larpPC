@@ -103,8 +103,6 @@ function ZoneDetails() {
   return (
     <main className="zone-details">
 
-      {/* HERO */}
-
       <section className="zone-details__hero">
 
         <img
@@ -156,8 +154,6 @@ function ZoneDetails() {
         </div>
 
       </section>
-
-      {/* EQUIPMENT */}
 
       <section className="zone-details__content">
 
@@ -235,8 +231,6 @@ function ZoneDetails() {
 
       </section>
 
-      {/* FEATURES */}
-
       <section className="zone-details__features">
 
         <div className="zone-details__section-header">
@@ -270,8 +264,6 @@ function ZoneDetails() {
         </div>
 
       </section>
-
-      {/* TARIFFS */}
 
       <section className="zone-details__tariffs" id="zone-tariffs">
 

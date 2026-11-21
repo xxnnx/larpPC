@@ -1,6 +1,10 @@
 
 import { useState } from 'react';
-import { getAllBookings, adminCancelBooking } from '@/entities/booking';
+import {
+  approveCancellation,
+  getAllBookings,
+  rejectCancellation
+} from '@/entities/booking';
 import { getRooms } from '@/entities/room';
 import { getComputersInRooms } from '@/entities/computer';
 import { useRemoteData } from '@/shared/hooks';
@@ -27,7 +31,7 @@ export function useBookingsAdmin(active, mutation) {
   const [filter, setFilter] = useState('ACTIVE');
 
   
-  const [cancelId, setCancelId] = useState(null);
+  const [reviewId, setReviewId] = useState(null);
 
   
   const [page, setPage] = useState(1);
@@ -43,7 +47,6 @@ export function useBookingsAdmin(active, mutation) {
     remote.data.computers.map(computer => [computer.id, computer])
   );
 
-  
   const totalPages = Math.max(
     1,
     Math.ceil(bookings.length / pageSize)
@@ -62,24 +65,35 @@ export function useBookingsAdmin(active, mutation) {
   function changeFilter(value) {
     setFilter(value);
     setPage(1);
-    setCancelId(null);
+    setReviewId(null);
   }
 
   
   function changePage(value) {
     setPage(Math.max(1, Math.min(value, totalPages)));
-    setCancelId(null);
+    setReviewId(null);
   }
 
-  
-  async function cancel(id) {
-    if (
-      await mutation.run(
-        () => adminCancelBooking(id),
-        `Бронь #${id} отменена.`
-      )
-    ) {
-      setCancelId(null);
+  function startReview(bookingId) {
+    setReviewId(bookingId);
+    mutation.clear();
+  }
+
+  function cancelReview() {
+    setReviewId(null);
+  }
+
+  async function review(booking, approved) {
+    const action = approved
+      ? () => approveCancellation(booking.id)
+      : () => rejectCancellation(booking.id);
+
+    const message = approved
+      ? `Бронь #${booking.id} отменена. Деньги возвращены игроку.`
+      : `Запрос на отмену брони #${booking.id} отклонён.`;
+
+    if (await mutation.run(action, message)) {
+      cancelReview();
       remote.refresh();
     }
   }
@@ -91,9 +105,10 @@ export function useBookingsAdmin(active, mutation) {
     places,
     filter,
     setFilter: changeFilter,
-    cancelId,
-    setCancelId,
-    cancel,
+    reviewId,
+    startReview,
+    cancelReview,
+    review,
     page: currentPage,
     totalPages,
     setPage: changePage,

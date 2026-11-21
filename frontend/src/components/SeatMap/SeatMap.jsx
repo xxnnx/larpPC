@@ -32,16 +32,13 @@ function SeatMap({
         {computers.map((pc) => {
           const isSelected = String(selectedSeat) === String(pc.id);
 
-          // Проверяем общий статус компьютера
           const hasAvailableStatus = pc.status === 'AVAILABLE';
 
-          // Проверяем доступность на выбранное время
           const isAvailableForTime =
             availableComputerIds !== null &&
             availableComputerIds !== undefined &&
             availableComputerIds.includes(String(pc.id));
 
-          // Компьютер недоступен, если не прошёл хотя бы одну проверку
           const isBusy = !hasAvailableStatus || !isAvailableForTime;
 
           return (

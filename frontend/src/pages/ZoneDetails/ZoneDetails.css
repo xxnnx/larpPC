@@ -4,7 +4,6 @@
   color: #fff;
 }
 
-/* HERO */
 
 .zone-details__hero {
   position: relative;
@@ -180,7 +179,6 @@
   transform: translateY(-2px);
 }
 
-/* COMMON */
 
 .zone-details__content,
 .zone-details__features,
@@ -208,7 +206,6 @@
   color: #aaa3b3;
 }
 
-/* EQUIPMENT */
 
 .zone-details__equipment {
   display: grid;
@@ -282,7 +279,6 @@
   font-weight: 600;
 }
 
-/* FEATURES */
 
 .zone-details__features {
   border-top: 1px solid rgba(255, 255, 255, 0.07);
@@ -321,7 +317,6 @@
   font-size: 16px;
 }
 
-/* TARIFFS */
 
 .zone-details__tariffs .prices__grid {
   grid-template-columns: minmax(0, 640px);
@@ -428,7 +423,6 @@
   margin-top: 35px;
 }
 
-/* 404 */
 
 .zone-details--not-found {
   display: flex;
@@ -472,7 +466,6 @@
   text-decoration: none;
 }
 
-/* TABLET */
 
 @media (max-width: 900px) {
   .zone-details__equipment {
@@ -484,7 +477,6 @@
   }
 }
 
-/* MOBILE */
 
 @media (max-width: 600px) {
   .zone-details__title {

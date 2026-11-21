@@ -1,7 +1,6 @@
 import assert from 'node:assert/strict';
 import { createServer } from 'vite';
 
-// Use a locally installed Playwright, or provide its module URL explicitly.
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const server = await createServer({ server: { host: '127.0.0.1', port: 5176, strictPort: true } });
 await server.listen();
@@ -35,7 +34,7 @@ try {
       if (path.endsWith('/activate')) tariffs[0].active = true;
       if (path === '/api/tariffs') tariffs.push({ ...body, id: 21, active: true });
       if (path === '/api/computers/10') Object.assign(computers[0], body);
-      if (path === '/api/bookings/30/cancel') bookings[0].status = 'CANCELLED';
+      if (path === '/api/bookings/30/approve-cancellation') bookings[0].status = 'CANCELLED';
       data = path === '/api/bookings' ? { ...body, id: 31, tariffName: 'Часовой', priceAtBooking: 225 } : {};
     } else if (path === '/api/auth/me') data = { id: 1, name: 'Admin', role: 'ADMIN' };
     else if (path === '/api/rooms') data = rooms;
@@ -97,11 +96,14 @@ try {
   await button('Сохранить компьютер').click();
   await page.getByRole('heading', { name: '№1 · PC updated' }).waitFor();
   assert.equal(writes.at(-1).body.number, 1);
+  bookings[0].status = 'CANCELLATION_REQUESTED';
   await button('Бронирования').click();
-  await button('Отменить бронь').click();
-  await button('Да, отменить').click();
+  await button('Ожидает отмены').click();
+  await button('Рассмотреть запрос').click();
+  await button('Подтвердить отмену').click();
+  await button('Отменена').click();
   await visibleSection().getByRole('article').getByText('Отменена', { exact: true }).waitFor();
-  assert.equal(writes.at(-1).path, '/api/bookings/30/cancel');
+  assert.equal(writes.at(-1).path, '/api/bookings/30/approve-cancellation');
   await page.setViewportSize({ width: 390, height: 844 });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   await page.goto('http://127.0.0.1:5176/booking?room=1');
