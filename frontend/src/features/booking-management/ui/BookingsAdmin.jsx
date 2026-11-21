@@ -81,6 +81,7 @@ export default function BookingsAdmin({ active, mutation }) {
                       <>
                         <div className={styles.actions}>
                           <Button
+                            className={styles.approveButton}
                             disabled={busy}
                             onClick={() => model.review(entry, true)}
                           >

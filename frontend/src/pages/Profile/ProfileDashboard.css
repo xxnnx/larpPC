@@ -8,7 +8,11 @@
 .profile-page .wallet-panel__balance strong { font-size: clamp(30px, 4vw, 42px); font-weight: 600; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
 .profile-page .wallet-panel__hint { font-size: 12px; color: #96909f; margin: 12px 0 22px; }
 .profile-page .wallet-panel__details { border-top: 1px solid #302c35; }
-.profile-page .wallet-panel__details summary { padding: 17px 0; cursor: pointer; font-size: 13px; color: #c9c2d2; }
+.profile-page .wallet-panel__details summary { display: flex; align-items: center; gap: 10px; padding: 17px 0; cursor: pointer; font-size: 13px; font-weight: 500; color: #c9c2d2; list-style: none; user-select: none; }
+.profile-page .wallet-panel__details summary::-webkit-details-marker { display: none; }
+.profile-page .wallet-panel__details summary::after { content: '⌄'; margin-left: auto; color: #9f91aa; font-size: 16px; transition: transform .18s ease; }
+.profile-page .wallet-panel__details[open] summary::after { transform: rotate(180deg); }
+.profile-page .wallet-panel__history-count { display: inline-grid; place-items: center; min-width: 24px; height: 22px; padding: 0 6px; border-radius: 6px; background: #25202c; color: #b8a7c9; font-size: 11px; font-variant-numeric: tabular-nums; }
 .profile-page .wallet-panel__details[open] { padding-bottom: 20px; }
 .profile-page .wallet-panel__details p { font-size: 13px; }
 .profile-page .profile-refresh { margin: 0; min-height: 40px; padding: 9px 14px; border: 1px solid #39333f; border-radius: 9px; background: transparent; color: #c7bdcf; font-size: 12px; cursor: pointer; }
